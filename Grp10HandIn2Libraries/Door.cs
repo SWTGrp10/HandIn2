@@ -2,7 +2,7 @@
 
 namespace Grp10HandIn2Libraries
 {
-    public class Class1
+    public class Door
     {
     }
 }
