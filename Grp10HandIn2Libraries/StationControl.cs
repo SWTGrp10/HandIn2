@@ -17,9 +17,9 @@ namespace Grp10HandIn2Libraries
 
         // Her mangler flere member variable
         private LadeskabState _state;
-        private ICharger _charger;
+        private IChargeControl _charger;
         private int _oldId;
-        private Door _door;
+        private IDoor _door;
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
