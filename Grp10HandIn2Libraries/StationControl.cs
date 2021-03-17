@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    class StationControl
+    class StationControl : StationControlSubject
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         private enum LadeskabState
