@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    class RFIDReader
+    public class RFIDReader
     {
+        StationControl stationControl = new StationControl();
+        public void OnRfidRead(int id)
+        {
+            
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Grp10HandIn2Libraries
         void ConnectPhone();
         void ReadRFID();
         void ChargingCabinetTaken();
+        void ConnectionFail();
         void RFIDFail();
         void RemovePhone();
     }
