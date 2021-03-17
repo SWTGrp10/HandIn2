@@ -7,23 +7,23 @@ namespace Grp10HandIn2Libraries
         public void LockDoor()
         {
             //Udskriv på display
-            throw new NotImplementedException();
+            Console.WriteLine("Door has been locked");
         }
 
         public void UnlockDoor()
         {
             //Udskriv på display
-            throw new NotImplementedException();
+            Console.WriteLine("Door has been unlocked");
         }
 
         public void OnDoorOpen()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Door has been opened");
         }
 
         public void OnDoorClose()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Door has been closed");
         }
     }
 }
