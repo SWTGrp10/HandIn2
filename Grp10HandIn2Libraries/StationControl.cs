@@ -20,6 +20,7 @@ namespace Grp10HandIn2Libraries
         private ICharger _charger;
         private int _oldId;
         private IDoor _door;
+        private IDisplay _display;
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
@@ -80,5 +81,16 @@ namespace Grp10HandIn2Libraries
         }
 
         // Her mangler de andre trigger handlere
+        public void DoorOpened()
+        {
+            Notify();
+            _display.ConnectPhone();
+        }
+
+        public void DoorClosed()
+        {
+            Notify();
+            _display.ReadRFID();
+        }
     }
 }
