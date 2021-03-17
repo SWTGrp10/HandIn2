@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    class LogFile : ILogFile
+    class DoorObserver : IObserver
     {
+        public void Update()
+        {
+
+        }
     }
 }
