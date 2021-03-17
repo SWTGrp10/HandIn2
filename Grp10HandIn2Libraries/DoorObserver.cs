@@ -4,8 +4,11 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    interface IObserver
+    class DoorObserver : IObserver
     {
-        void Update();
+        public void Update()
+        {
+
+        }
     }
 }
