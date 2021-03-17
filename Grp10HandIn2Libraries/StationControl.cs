@@ -17,7 +17,7 @@ namespace Grp10HandIn2Libraries
 
         // Her mangler flere member variable
         private LadeskabState _state;
-        private IChargeControl _charger;
+        private ICharger _charger;
         private int _oldId;
         private IDoor _door;
 

@@ -6,5 +6,8 @@ namespace Grp10HandIn2Libraries
 {
     interface IDoor
     {
+        void LockDoor();
+
+        void UnlockDoor();
     }
 }
