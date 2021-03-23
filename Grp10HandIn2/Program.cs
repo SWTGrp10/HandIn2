@@ -21,7 +21,7 @@ namespace Grp10HandIn2
             do
             {
                 string input;
-                System.Console.WriteLine("Indtast E, O, C, R: ");
+                System.Console.WriteLine("Indtast E for exit, O for open, C for close, R for rfid read: ");
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
