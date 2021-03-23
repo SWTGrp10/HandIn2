@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    class StationControl : StationControlSubject
+    public class StationControl : StationControlSubject
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         private enum ChargingCabinetState
@@ -21,8 +21,9 @@ namespace Grp10HandIn2Libraries
         private int _oldId;
         private IDoor _door;
         private IDisplay _display;
+        private ILogFile _logfile;
 
-        private string logFile = "logfile.txt"; // Navnet på systemets log-fil
+        //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         
         public StationControl(IRFIDReader rfidReader)
@@ -31,6 +32,7 @@ namespace Grp10HandIn2Libraries
             _charger = new USBCharger();
             _door = new Door();
             _display = new Display();
+            _logfile = new LogFile();
         }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
@@ -44,12 +46,10 @@ namespace Grp10HandIn2Libraries
                     {
                         _door.LockDoor();
                         _charger.StartCharge();
-                        _oldId = e.RFID;
-                        using (var writer = File.AppendText(logFile))
-                        {
-                            writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", _oldId);
-                        }
+                        _oldId = id;
 
+                        _logfile.WriteToLogLocked(id);
+                        
                         _display.ChargingCabinetTaken();
                         _state = ChargingCabinetState.Locked;
                     }
@@ -70,10 +70,8 @@ namespace Grp10HandIn2Libraries
                     {
                         _charger.StopCharge();
                         _door.UnlockDoor();
-                        using (var writer = File.AppendText(logFile))
-                        {
-                            writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", _oldId);
-                        }
+                        
+                        _logfile.WriteToLogUnlocked(id);
 
                         _display.RemovePhone();
                         _state = ChargingCabinetState.Available;
@@ -90,14 +88,14 @@ namespace Grp10HandIn2Libraries
         // Her mangler de andre trigger handlere
         public void DoorOpened()
         {
-            Notify();
+            //Notify();
             _display.ConnectPhone();
             _state = ChargingCabinetState.DoorOpen;
         }
 
         public void DoorClosed()
         {
-            Notify();
+            //Notify();
             _display.ReadRFID();
             _state = ChargingCabinetState.Available;
         }

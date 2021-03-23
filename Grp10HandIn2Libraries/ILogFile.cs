@@ -6,5 +6,7 @@ namespace Grp10HandIn2Libraries
 {
     interface ILogFile
     {
+        void WriteToLogLocked(int id);
+        void WriteToLogUnlocked(int id);
     }
 }
