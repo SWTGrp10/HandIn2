@@ -10,8 +10,8 @@ namespace Grp10HandIn2Libraries
         private RFIDReader rfidReader;
         public event EventHandler<RFIDReaderEventArgs> RFIDValueEvent; 
     }
-    
-    abstract class StationControlSubject
+
+    public abstract class StationControlSubject
     {
         private List<IObserver> _observers = new List<IObserver>();
         

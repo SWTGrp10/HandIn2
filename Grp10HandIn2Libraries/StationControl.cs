@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    class StationControl : StationControlSubject
+    public class StationControl : StationControlSubject
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         private enum ChargingCabinetState
@@ -87,14 +87,14 @@ namespace Grp10HandIn2Libraries
         // Her mangler de andre trigger handlere
         public void DoorOpened()
         {
-            Notify();
+            //Notify();
             _display.ConnectPhone();
             _state = ChargingCabinetState.DoorOpen;
         }
 
         public void DoorClosed()
         {
-            Notify();
+            //Notify();
             _display.ReadRFID();
             _state = ChargingCabinetState.Available;
         }

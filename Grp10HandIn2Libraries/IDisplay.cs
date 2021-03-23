@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    interface IDisplay
+    public interface IDisplay
     {
         void ConnectPhone();
         void ReadRFID();
