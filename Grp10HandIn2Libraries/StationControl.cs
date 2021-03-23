@@ -26,9 +26,10 @@ namespace Grp10HandIn2Libraries
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         
-        public StationControl(IRFIDReader rfidReader, IDisplay display)
-        public StationControl(IRFIDReader rfidReader, IDoor)
+        public StationControl(IRFIDReader rfidReader, IDisplay display, IDoor door)
         {
+            door.DoorEvent += DoorOpened;
+            door.DoorEvent += DoorClosed;
             rfidReader.RFIDEvent += RfidDetected;
             _charger = new USBCharger();
             _door = new Door();
@@ -62,7 +63,7 @@ namespace Grp10HandIn2Libraries
                     break;
 
                 case ChargingCabinetState.DoorOpen:
-                    // Ignore
+                   //ignore
                     break;
 
                 case ChargingCabinetState.Locked:
@@ -87,16 +88,16 @@ namespace Grp10HandIn2Libraries
         }
 
         // Her mangler de andre trigger handlere
-        public void DoorOpened()
+        public void DoorOpened(object sender, DoorEventArgs e)
         {
-            //Notify();
             _display.ConnectPhone();
-            _state = ChargingCabinetState.DoorOpen;
+
+                _state = ChargingCabinetState.DoorOpen;
+
         }
 
-        public void DoorClosed()
+        public void DoorClosed(object sender, DoorEventArgs e)
         {
-            //Notify();
             _display.ReadRFID();
             _state = ChargingCabinetState.Available;
         }
