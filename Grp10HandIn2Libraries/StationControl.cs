@@ -8,7 +8,7 @@ namespace Grp10HandIn2Libraries
     public class StationControl
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
-        private enum ChargingCabinetState
+        public enum ChargingCabinetState
         {
             Available,
             Locked,
@@ -16,7 +16,7 @@ namespace Grp10HandIn2Libraries
         };
 
         // Her mangler flere member variable
-        private ChargingCabinetState _state;
+        public ChargingCabinetState _state;
         private ICharger _charger;
         private int _oldId;
         private IDoor _door;
@@ -26,12 +26,13 @@ namespace Grp10HandIn2Libraries
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         
+        public StationControl(IRFIDReader rfidReader, IDisplay display)
         public StationControl(IRFIDReader rfidReader, IDoor)
         {
             rfidReader.RFIDEvent += RfidDetected;
             _charger = new USBCharger();
             _door = new Door();
-            _display = new Display();
+            _display = display;
             _logfile = new LogFile();
         }
 

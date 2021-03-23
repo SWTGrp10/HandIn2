@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Grp10HandIn2Libraries;
 
+
 namespace Grp10HandIn2
 {
     class Program
@@ -11,7 +12,9 @@ namespace Grp10HandIn2
             Console.WriteLine("Hello World!");
             Console.Write("Test");
             IDoor door = new Door();
-            
+            var rfidReader = new RFIDReader(); 
+            IDisplay display = new Display();
+            var stationController = new StationControl(rfidReader, display);
 
             // Assemble your system here from all the classes
 
@@ -19,7 +22,7 @@ namespace Grp10HandIn2
             do
             {
                 string input;
-                System.Console.WriteLine("Indtast E, O, C, R: ");
+                System.Console.WriteLine("Indtast E for exit, O for open, C for close, R for rfid read: ");
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
@@ -42,7 +45,7 @@ namespace Grp10HandIn2
                         string idString = System.Console.ReadLine();
 
                         int id = Convert.ToInt32(idString);
-                        RFIDReader. (id);
+                        rfidReader.ReadRFID(id);
                         break;
 
                     default:
