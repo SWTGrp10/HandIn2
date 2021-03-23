@@ -4,24 +4,58 @@ namespace Grp10HandIn2Libraries
 {
     public class Door : IDoor
     {
-        public event EventHandler<DoorEventArgs> DoorEvent;
+        public event EventHandler<DoorEventArgs> DoorOpenEvent;
+        public event EventHandler<DoorEventArgs> DoorCloseEvent;
 
-        public void OpenDoor(bool openDoor)
+        public void OpenCloseDoor(bool openDoor)
         {
             Console.WriteLine("Kontrollerer dør");
-            OnDoorOpen(new DoorEventArgs{OpenDoor = openDoor});
+
+            if (openDoor)
+            {
+                OnDoorOpen(new DoorEventArgs { OpenDoor = openDoor });
+            }
+            else
+            {
+                OnDoorClose(new DoorEventArgs { OpenDoor = openDoor });
+            }
+
+                
         }
 
         public void CloseDoor(bool openDoor)
         {
-            Console.WriteLine("Kontrollerer dør");
-            OnDoorClose(new DoorEventArgs { OpenDoor = openDoor });
+
         }
+        public void DoOpenDoor()
+        {
+            //Udskriv på display
+            Console.WriteLine("Door has been opened");
+
+        }
+
+
+        public void DoCloseDoor()
+        {
+            //Udskriv på display
+            Console.WriteLine("Door has been closed");
+
+        }
+
+
+
+
+        //public void CloseDoor()
+        //{
+        //    Console.WriteLine("Kontrollerer dør");
+        //    OnDoorClose(new DoorEventArgs {});
+        //}
 
         public void LockDoor()
         {
             //Udskriv på display
             Console.WriteLine("Door has been locked");
+
         }
 
         public void UnlockDoor()
@@ -32,14 +66,12 @@ namespace Grp10HandIn2Libraries
 
         protected virtual void OnDoorOpen(DoorEventArgs e)
         {
-            Console.WriteLine("Door has been opened");
-            DoorEvent?.Invoke(this, e);
+            DoorOpenEvent?.Invoke(this, e);
         }
 
         protected virtual void OnDoorClose(DoorEventArgs e)
         {
-            Console.WriteLine("Door has been closed");
-            DoorEvent?.Invoke(this, e);
+            DoorCloseEvent?.Invoke(this, e);
         }
     }
 

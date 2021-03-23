@@ -12,7 +12,6 @@ namespace Grp10HandIn2Libraries
 
         public void ReadRFID(int rfid)
         {
-            Console.WriteLine("RFID read");
             OnRfidRead(new RFIDEventArgs{RFID = rfid});
         }
 

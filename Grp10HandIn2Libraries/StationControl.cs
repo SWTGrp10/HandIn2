@@ -28,8 +28,8 @@ namespace Grp10HandIn2Libraries
         
         public StationControl(IRFIDReader rfidReader, IDisplay display, IDoor door)
         {
-            door.DoorEvent += DoorOpened;
-            door.DoorEvent += DoorClosed;
+            door.DoorOpenEvent += DoorOpened;
+            door.DoorCloseEvent += DoorClosed;
             rfidReader.RFIDEvent += RfidDetected;
             _charger = new USBCharger();
             _door = door;
@@ -63,7 +63,9 @@ namespace Grp10HandIn2Libraries
                     break;
 
                 case ChargingCabinetState.DoorOpen:
-                   //Ignore
+                {
+                    Console.WriteLine("Please close door");
+                }
                     break;
 
                 case ChargingCabinetState.Locked:
@@ -90,14 +92,15 @@ namespace Grp10HandIn2Libraries
         // Her mangler de andre trigger handlere
         public void DoorOpened(object sender, DoorEventArgs e)
         {
-            _display.ConnectPhone();
             if (_state == ChargingCabinetState.Available)
             {
                 _state = ChargingCabinetState.DoorOpen;
+                _door.DoOpenDoor();
+                _display.ConnectPhone();
             }
             else
             {
-                _display.ChargingCabinetTaken();
+                Console.WriteLine("Not available");
             }
         }
 
@@ -105,8 +108,15 @@ namespace Grp10HandIn2Libraries
         {
             _display.ReadRFID();
 
-
-            _state = ChargingCabinetState.Available;
+            if (_state == ChargingCabinetState.DoorOpen)
+            {
+                _state = ChargingCabinetState.Available;
+                _door.DoCloseDoor();
+            }
+            else
+            {
+                Console.WriteLine("Noob");
+            }
         }
     }
 }

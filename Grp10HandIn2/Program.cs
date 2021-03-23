@@ -34,11 +34,11 @@ namespace Grp10HandIn2
                         break;
 
                     case 'O':
-                        door.OpenDoor(true);
+                        door.OpenCloseDoor(true);
                         break;
 
                     case 'C':
-                        door.CloseDoor(false);
+                        door.OpenCloseDoor(false);
                         break;
 
                     case 'R':
