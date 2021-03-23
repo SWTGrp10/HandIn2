@@ -63,6 +63,8 @@ namespace Grp10HandIn2.UnitTest
     {
         public int checkLock = 0;
 
+        public event EventHandler<DoorEventArgs> DoorEvent;
+
         public void LockDoor()
         {
             checkLock = 1;
