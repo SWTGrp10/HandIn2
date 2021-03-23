@@ -46,9 +46,9 @@ namespace Grp10HandIn2Libraries
                     {
                         _door.LockDoor();
                         _charger.StartCharge();
-                        _oldId = id;
+                        _oldId = e.RFID;
 
-                        _logfile.WriteToLogLocked(id);
+                        _logfile.WriteToLogLocked(_oldId);
                         
                         _display.ChargingCabinetTaken();
                         _state = ChargingCabinetState.Locked;
@@ -71,7 +71,7 @@ namespace Grp10HandIn2Libraries
                         _charger.StopCharge();
                         _door.UnlockDoor();
                         
-                        _logfile.WriteToLogUnlocked(id);
+                        _logfile.WriteToLogUnlocked(_oldId);
 
                         _display.RemovePhone();
                         _state = ChargingCabinetState.Available;
