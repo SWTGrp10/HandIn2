@@ -31,6 +31,7 @@ namespace Grp10HandIn2Libraries
             _charger = new USBCharger();
             _door = new Door();
             _display = new Display();
+            _logfile = new LogFile();
         }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
@@ -46,6 +47,7 @@ namespace Grp10HandIn2Libraries
                         _charger.StartCharge();
                         _oldId = id;
 
+                        _logfile.WriteToLogLocked(id);
                         //using (var writer = File.AppendText(logFile))
                         //{
                         //    writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
@@ -71,10 +73,8 @@ namespace Grp10HandIn2Libraries
                     {
                         _charger.StopCharge();
                         _door.UnlockDoor();
-                        using (var writer = File.AppendText(logFile))
-                        {
-                            writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", id);
-                        }
+                        
+                        _logfile.WriteToLogUnlocked(id);
 
                         _display.RemovePhone();
                         _state = ChargingCabinetState.Available;
