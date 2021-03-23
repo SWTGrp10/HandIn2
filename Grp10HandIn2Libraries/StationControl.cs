@@ -17,7 +17,7 @@ namespace Grp10HandIn2Libraries
 
         // Her mangler flere member variable
         public ChargingCabinetState _state;
-        private ICharger _charger;
+        public ICharger _charger;
         private int _oldId;
         private IDoor _door;
         private IDisplay _display;
@@ -26,17 +26,17 @@ namespace Grp10HandIn2Libraries
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         
-        public StationControl(IRFIDReader rfidReader, IDisplay display)
+        public StationControl(IRFIDReader rfidReader, IDisplay display, IDoor door)
         {
             rfidReader.RFIDEvent += RfidDetected;
             _charger = new USBCharger();
-            _door = new Door();
+            _door = door;
             _display = display;
             _logfile = new LogFile();
         }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
-        private void RfidDetected(object sender, RFIDEventArgs e)
+        public void RfidDetected(object sender, RFIDEventArgs e)
         {
             switch (_state)
             {

@@ -10,7 +10,7 @@ namespace Grp10HandIn2Libraries
         public double Current { set; get; }
     }
 
-    interface ICharger
+    public interface ICharger
     {
         // Event triggered on new current value
         event EventHandler<CurrentEventArgs> CurrentValueEvent;
@@ -19,7 +19,7 @@ namespace Grp10HandIn2Libraries
         double CurrentValue { get; }
 
         // Require connection status of the phone
-        bool Connected { get; }
+        bool Connected { get; set; }
 
         // Start charging
         void StartCharge();

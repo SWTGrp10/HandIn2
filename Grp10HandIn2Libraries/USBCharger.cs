@@ -18,7 +18,7 @@ namespace Grp10HandIn2Libraries
 
         public double CurrentValue { get; private set; }
 
-        public bool Connected { get; private set; }
+        public bool Connected { get; set; }
 
         private bool _overload;
         private bool _charging;

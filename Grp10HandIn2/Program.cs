@@ -14,7 +14,7 @@ namespace Grp10HandIn2
             IDoor door = new Door();
             var rfidReader = new RFIDReader(); 
             IDisplay display = new Display();
-            var stationController = new StationControl(rfidReader, display);
+            var stationController = new StationControl(rfidReader, display, door);
 
             // Assemble your system here from all the classes
 
