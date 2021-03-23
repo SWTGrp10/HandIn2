@@ -26,7 +26,7 @@ namespace Grp10HandIn2Libraries
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         
-        public StationControl(IRFIDReader rfidReader)
+        public StationControl(IRFIDReader rfidReader, IDoor)
         {
             rfidReader.RFIDEvent += RfidDetected;
             _charger = new USBCharger();
