@@ -11,7 +11,7 @@ namespace Grp10HandIn2Libraries
 
         void UnlockDoor();
 
-        void OnDoorOpen();
-        void OnDoorClose();
+        //void OnDoorOpen();
+        //void OnDoorClose();
     }
 }

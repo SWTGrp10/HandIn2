@@ -63,7 +63,7 @@ namespace Grp10HandIn2Libraries
                     break;
 
                 case ChargingCabinetState.DoorOpen:
-                   //ignore
+                   //Ignore
                     break;
 
                 case ChargingCabinetState.Locked:
@@ -91,14 +91,21 @@ namespace Grp10HandIn2Libraries
         public void DoorOpened(object sender, DoorEventArgs e)
         {
             _display.ConnectPhone();
-
+            if (_state == ChargingCabinetState.Available)
+            {
                 _state = ChargingCabinetState.DoorOpen;
-
+            }
+            else
+            {
+                _display.ChargingCabinetTaken();
+            }
         }
 
         public void DoorClosed(object sender, DoorEventArgs e)
         {
             _display.ReadRFID();
+
+
             _state = ChargingCabinetState.Available;
         }
     }

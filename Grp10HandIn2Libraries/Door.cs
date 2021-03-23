@@ -6,29 +6,29 @@ namespace Grp10HandIn2Libraries
     {
         public event EventHandler<DoorEventArgs> DoorEvent;
 
-        public void OpenDoor(bool doorLocked)
+        public void OpenDoor(bool openDoor)
         {
             Console.WriteLine("Kontrollerer dør");
-            OnDoorOpen(new DoorEventArgs{DoorLocked = doorLocked});
+            OnDoorOpen(new DoorEventArgs{OpenDoor = openDoor});
         }
 
-        public void CloseDoor(bool doorLocked)
+        public void CloseDoor(bool openDoor)
         {
             Console.WriteLine("Kontrollerer dør");
-            OnDoorClose(new DoorEventArgs { DoorLocked = doorLocked });
+            OnDoorClose(new DoorEventArgs { OpenDoor = openDoor });
         }
 
-        //public void LockDoor()
-        //{
-        //    //Udskriv på display
-        //    Console.WriteLine("Door has been locked");
-        //}
+        public void LockDoor()
+        {
+            //Udskriv på display
+            Console.WriteLine("Door has been locked");
+        }
 
-        //public void UnlockDoor()
-        //{
-        //    //Udskriv på display
-        //    Console.WriteLine("Door has been unlocked");
-        //}
+        public void UnlockDoor()
+        {
+            //Udskriv på display
+            Console.WriteLine("Door has been unlocked");
+        }
 
         protected virtual void OnDoorOpen(DoorEventArgs e)
         {
@@ -45,6 +45,6 @@ namespace Grp10HandIn2Libraries
 
     public class DoorEventArgs : EventArgs
     {
-        public bool DoorLocked { get; set; }
+        public bool OpenDoor { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Grp10HandIn2
         {
             Console.WriteLine("Hello World!");
             Console.Write("Test");
-            IDoor door = new Door();
+            var door = new Door();
             var rfidReader = new RFIDReader(); 
             IDisplay display = new Display();
             var stationController = new StationControl(rfidReader, display, door);
@@ -19,6 +19,7 @@ namespace Grp10HandIn2
             // Assemble your system here from all the classes
 
             bool finish = false;
+            
             do
             {
                 string input;
@@ -33,11 +34,11 @@ namespace Grp10HandIn2
                         break;
 
                     case 'O':
-                        door.OnDoorOpen();
+                        door.OpenDoor(true);
                         break;
 
                     case 'C':
-                        door.OnDoorClose();
+                        door.CloseDoor(false);
                         break;
 
                     case 'R':
