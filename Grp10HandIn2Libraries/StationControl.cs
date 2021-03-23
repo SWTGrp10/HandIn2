@@ -8,7 +8,7 @@ namespace Grp10HandIn2Libraries
     class StationControl : StationControlSubject
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
-        private enum LadeskabState
+        private enum ChargingCabinetState
         {
             Available,
             Locked,
@@ -16,22 +16,29 @@ namespace Grp10HandIn2Libraries
         };
 
         // Her mangler flere member variable
-        private LadeskabState _state;
+        private ChargingCabinetState _state;
         private ICharger _charger;
         private int _oldId;
         private IDoor _door;
+        private IDisplay _display;
         private ILogFile _logfile;
 
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         // Her mangler constructor
+        public StationControl()
+        {
+            _charger = new USBCharger();
+            _door = new Door();
+            _display = new Display();
+        }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
         private void RfidDetected(int id)
         {
             switch (_state)
             {
-                case LadeskabState.Available:
+                case ChargingCabinetState.Available:
                     // Check for ladeforbindelse
                     if (_charger.Connected)
                     {
@@ -44,21 +51,21 @@ namespace Grp10HandIn2Libraries
                         //    writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
                         //}
 
-                        Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
-                        _state = LadeskabState.Locked;
+                        _display.ChargingCabinetTaken();
+                        _state = ChargingCabinetState.Locked;
                     }
                     else
                     {
-                        Console.WriteLine("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
+                        _display.ConnectionFail();
                     }
 
                     break;
 
-                case LadeskabState.DoorOpen:
+                case ChargingCabinetState.DoorOpen:
                     // Ignore
                     break;
 
-                case LadeskabState.Locked:
+                case ChargingCabinetState.Locked:
                     // Check for correct ID
                     if (id == _oldId)
                     {
@@ -69,12 +76,12 @@ namespace Grp10HandIn2Libraries
                             writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", id);
                         }
 
-                        Console.WriteLine("Tag din telefon ud af skabet og luk døren");
-                        _state = LadeskabState.Available;
+                        _display.RemovePhone();
+                        _state = ChargingCabinetState.Available;
                     }
                     else
                     {
-                        Console.WriteLine("Forkert RFID tag");
+                        _display.RFIDFail();
                     }
 
                     break;
@@ -82,5 +89,18 @@ namespace Grp10HandIn2Libraries
         }
 
         // Her mangler de andre trigger handlere
+        public void DoorOpened()
+        {
+            Notify();
+            _display.ConnectPhone();
+            _state = ChargingCabinetState.DoorOpen;
+        }
+
+        public void DoorClosed()
+        {
+            Notify();
+            _display.ReadRFID();
+            _state = ChargingCabinetState.Available;
+        }
     }
 }

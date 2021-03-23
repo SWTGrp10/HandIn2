@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    interface IDoor
+    public interface IDoor
     {
         void LockDoor();
 

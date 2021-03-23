@@ -4,14 +4,18 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
+    public class RFIDReaderEventArgs : EventArgs
+    {
+        public RFIDReader pulseData { get; set; }
+        private RFIDReader rfidReader;
+        public event EventHandler<RFIDReaderEventArgs> RFIDValueEvent; 
+    }
+    
     abstract class StationControlSubject
     {
         private List<IObserver> _observers = new List<IObserver>();
+        
 
-        public void Attach(IObserver observer)
-        {
-            _observers.Add(observer);
-        }
 
         public void Detach(IObserver observer)
         {
