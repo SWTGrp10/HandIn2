@@ -20,8 +20,9 @@ namespace Grp10HandIn2Libraries
         private ICharger _charger;
         private int _oldId;
         private IDoor _door;
+        private ILogFile _logfile;
 
-        private string logFile = "logfile.txt"; // Navnet på systemets log-fil
+        //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         // Her mangler constructor
 
@@ -37,10 +38,11 @@ namespace Grp10HandIn2Libraries
                         _door.LockDoor();
                         _charger.StartCharge();
                         _oldId = id;
-                        using (var writer = File.AppendText(logFile))
-                        {
-                            writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
-                        }
+
+                        //using (var writer = File.AppendText(logFile))
+                        //{
+                        //    writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
+                        //}
 
                         Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
                         _state = LadeskabState.Locked;
