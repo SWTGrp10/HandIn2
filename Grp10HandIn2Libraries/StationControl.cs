@@ -24,16 +24,17 @@ namespace Grp10HandIn2Libraries
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
-        // Her mangler constructor
-        public StationControl()
+        
+        public StationControl(IRFIDReader rfidReader)
         {
+            rfidReader.RFIDEvent += RfidDetected;
             _charger = new USBCharger();
             _door = new Door();
             _display = new Display();
         }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
-        private void RfidDetected(int id)
+        private void RfidDetected(object sender, RFIDEventArgs e)
         {
             switch (_state)
             {
@@ -43,10 +44,10 @@ namespace Grp10HandIn2Libraries
                     {
                         _door.LockDoor();
                         _charger.StartCharge();
-                        _oldId = id;
+                        _oldId = e.RFID;
                         using (var writer = File.AppendText(logFile))
                         {
-                            writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
+                            writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", _oldId);
                         }
 
                         _display.ChargingCabinetTaken();
@@ -65,13 +66,13 @@ namespace Grp10HandIn2Libraries
 
                 case ChargingCabinetState.Locked:
                     // Check for correct ID
-                    if (id == _oldId)
+                    if (e.RFID == _oldId)
                     {
                         _charger.StopCharge();
                         _door.UnlockDoor();
                         using (var writer = File.AppendText(logFile))
                         {
-                            writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", id);
+                            writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", _oldId);
                         }
 
                         _display.RemovePhone();

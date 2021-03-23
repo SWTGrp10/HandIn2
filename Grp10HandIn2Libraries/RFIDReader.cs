@@ -4,12 +4,22 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    public class RFIDReader
+    public class RFIDReader : IRFIDReader
     {
-        StationControl stationControl = new StationControl();
-        public void OnRfidRead(int id)
+        
+
+        public event EventHandler<RFIDEventArgs> RFIDEvent;
+
+        public void ReadRFID(int rfid)
         {
-            
+            Console.WriteLine("RFID read");
+            OnRfidRead(new RFIDEventArgs{RFID = rfid});
         }
+
+        protected virtual void OnRfidRead(RFIDEventArgs e)
+        {
+            RFIDEvent?.Invoke(this, e);
+        }
+
     }
 }
