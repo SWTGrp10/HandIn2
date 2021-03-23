@@ -48,11 +48,7 @@ namespace Grp10HandIn2Libraries
                         _oldId = id;
 
                         _logfile.WriteToLogLocked(id);
-                        //using (var writer = File.AppendText(logFile))
-                        //{
-                        //    writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
-                        //}
-
+                        
                         _display.ChargingCabinetTaken();
                         _state = ChargingCabinetState.Locked;
                     }
