@@ -13,7 +13,8 @@ namespace Grp10HandIn2
             Console.Write("Test");
             IDoor door = new Door();
             var rfidReader = new RFIDReader(); 
-            var stationController = new StationControl(rfidReader);
+            IDisplay display = new Display();
+            var stationController = new StationControl(rfidReader, display);
 
             // Assemble your system here from all the classes
 

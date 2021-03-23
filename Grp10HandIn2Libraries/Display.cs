@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    class Display : IDisplay
+    public class Display : IDisplay
     {
         public void ConnectPhone()
         {
