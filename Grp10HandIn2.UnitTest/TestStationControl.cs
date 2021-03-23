@@ -10,7 +10,7 @@ namespace Grp10HandIn2.UnitTest
         [SetUp]
         public void Setup()
         {
-            _uut = new StationControl();
+            _uut = new StationControl(new RFIDReader());
             _display = new FakeDisplay();
         }
 
