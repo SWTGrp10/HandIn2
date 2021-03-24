@@ -50,5 +50,10 @@ namespace Grp10HandIn2Libraries
         {
             Console.WriteLine("Mulig kortslutning, fjern telefon");
         }
+
+        public void NotAvailable()
+        {
+            Console.WriteLine("Not available");
+        }
     }
 }

@@ -15,9 +15,6 @@ namespace Grp10HandIn2.UnitTest
 
         private DoorEventArgs _doorEvent;
 
-        //private FakeDisplay _display;
-        //private FakeCharger _charger;
-        //private FakeDoor _door;
 
         [SetUp]
         public void Setup()
@@ -81,6 +78,24 @@ namespace Grp10HandIn2.UnitTest
             //Assert
             Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.DoorOpen));
         }
+
+        [Test]
+        public void StationControl_DoorOpened_NotAvailableCalled()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            _uut = new StationControl(new RFIDReader(), _display, _door);
+
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.Locked;
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = true });
+            _door.DoorChangedEvent += _uut.DoorOpened;
+
+            //Assert
+            _display.Received().NotAvailable();
+        }
+
 
         [Test]
         public void StationControl_DoorClosed_ReadRFID()

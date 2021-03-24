@@ -105,7 +105,7 @@ namespace Grp10HandIn2Libraries
                 }
                 else
                 {
-                    Console.WriteLine("Not available");
+                    _display.NotAvailable();
                 }
             }
         }
