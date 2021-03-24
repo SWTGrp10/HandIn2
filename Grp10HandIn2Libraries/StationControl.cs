@@ -18,7 +18,7 @@ namespace Grp10HandIn2Libraries
         // Her mangler flere member variable
         public ChargingCabinetState _state;
         private ChargeControl _chargeControl;
-        private int _oldId;
+        public int _oldId;
         private IDoor _door;
         private IDisplay _display;
         private ILogFile _logfile;
@@ -48,10 +48,10 @@ namespace Grp10HandIn2Libraries
                     if (_chargeControl.IsConnected())
                     {
                         _door.LockDoor();
-                        _chargeControl.StartCharge();
+                        _chargeControl.StartCharge(); //Ikke testet
                         _oldId = e.RFID;
 
-                        _logfile.WriteToLogLocked(_oldId);
+                        _logfile.WriteToLogLocked(_oldId); //ikke testet
                         
                         _display.ChargingCabinetTaken();
                         _state = ChargingCabinetState.Locked;
@@ -59,14 +59,14 @@ namespace Grp10HandIn2Libraries
                     }
                     else
                     {
-                        _display.ConnectionFail();
+                        _display.ConnectionFail(); //Test virker ikke
                     }
 
                     break;
 
                 case ChargingCabinetState.DoorOpen:
                 {
-                    Console.WriteLine("Please close door");
+                    _display.CloseDoor();
                 }
                     break;
 
@@ -74,10 +74,10 @@ namespace Grp10HandIn2Libraries
                     // Check for correct ID
                     if (e.RFID == _oldId)
                     {
-                        _chargeControl.StopCharge();
+                        _chargeControl.StopCharge(); //Ikke testet
                         _door.UnlockDoor();
                         
-                        _logfile.WriteToLogUnlocked(_oldId);
+                        _logfile.WriteToLogUnlocked(_oldId); //ikke testet
 
                         _display.RemovePhone();
                         _state = ChargingCabinetState.Available;

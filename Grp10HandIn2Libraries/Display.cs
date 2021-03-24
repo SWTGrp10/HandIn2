@@ -55,5 +55,10 @@ namespace Grp10HandIn2Libraries
         {
             Console.WriteLine("Not available");
         }
+
+        public void CloseDoor()
+        {
+            Console.WriteLine("Please close door");
+        }
     }
 }

@@ -16,5 +16,6 @@ namespace Grp10HandIn2Libraries
         void UngoingCharge();
         void ChargingFail();
         void NotAvailable();
+        void CloseDoor();
     }
 }
