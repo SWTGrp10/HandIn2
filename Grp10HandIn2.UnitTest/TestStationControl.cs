@@ -11,6 +11,7 @@ namespace Grp10HandIn2.UnitTest
     public class Tests
     {
         private StationControl _uut;
+        private ChargeControl _chargeControl;
 
         private DoorEventArgs _doorEvent;
 
@@ -23,7 +24,10 @@ namespace Grp10HandIn2.UnitTest
         {
             var _display = Substitute.For<IDisplay>();
             var _door = Substitute.For<IDoor>();
-            _uut = new StationControl(new RFIDReader(), _display, _door);
+            var _charger = Substitute.For<ICharger>();
+            var _rfid = Substitute.For<IRFIDReader>();
+            _uut = new StationControl(_rfid, _display, _door);
+            _chargeControl = new ChargeControl(_charger);
             _doorEvent = null;
             _door.DoorChangedEvent +=
                 ((sender, args) => { _doorEvent = args; });
@@ -33,56 +37,105 @@ namespace Grp10HandIn2.UnitTest
         [TestCase(false)]
         public void StationControl_DoorChanged_CurrentBoolIsCorrect(bool doorChanged)
         {
+            //Arrange
             var _display = Substitute.For<IDisplay>();
             var _door = Substitute.For<IDoor>();
             _uut = new StationControl(new RFIDReader(), _display, _door);
+            
+            //Act
             _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs {OpenDoor = doorChanged});
+
+            //Assert
             Assert.That(_uut.doorOpen,Is.EqualTo(doorChanged));
         }
 
         [Test]
         public void StationControl_DoorOpened_CallsConnectPhone()
         {
+            //Arrange
             var _display = Substitute.For<IDisplay>();
             var _door = Substitute.For<IDoor>();
             _uut = new StationControl(new RFIDReader(), _display, _door);
-            _doorEvent = null;
-            _door.DoorChangedEvent +=
-                ((sender, args) => { _doorEvent = args; });
 
-            _uut.DoorOpened(_door, _doorEvent);
+            //Act
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = true });
+            _door.DoorChangedEvent += _uut.DoorOpened;
+
+            //Assert
             _display.Received().ConnectPhone();
         }
 
-        //    [Test]
-        //    public void StationControl_DoorOpened_ChargingCabinetStateDoorOpen()
-        //    {
-        //        _uut.DoorOpened();
-        //        Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.DoorOpen));
-        //    }
+        [Test]
+        public void StationControl_DoorOpened_ChargingCabinetStateDoorOpen()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            _uut = new StationControl(new RFIDReader(), _display, _door);
 
-        //    [Test]
-        //    public void StationControl_DoorClosed_ReadRFID()
-        //    {
-        //        _uut.DoorClosed();
-        //        Assert.That(_display.check, Is.EqualTo(2));
-        //    }
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.Available;
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = true });
+            _door.DoorChangedEvent += _uut.DoorOpened;
 
-        //    [Test]
-        //    public void StationControl_DoorClosed_ChargingCabinetStateAvailable()
-        //    {
-        //        _uut.DoorClosed();
-        //        Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.Available));
-        //    }
+            //Assert
+            Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.DoorOpen));
+        }
 
-        //    [Test]
-        //    public void StationControl_RfidDetectedStateAvailableAndChargerConnected_LockDoor()
-        //    {
-        //        _uut._state = StationControl.ChargingCabinetState.Available;
-        //        _uut._charger.Connected = true;
-        //        _uut.RfidDetected(new object(), new RFIDEventArgs());
-        //        Assert.That(_door.checkLock, Is.EqualTo(1));
-        //    }
+        [Test]
+        public void StationControl_DoorClosed_ReadRFID()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            _uut = new StationControl(new RFIDReader(), _display, _door);
+
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.DoorOpen;
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
+
+            //Assert
+            _display.Received().ReadRFID();
+        }
+
+        [Test]
+        public void StationControl_DoorClosed_ChargingCabinetStateAvailable()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            _uut = new StationControl(new RFIDReader(), _display, _door);
+
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.DoorOpen;
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
+
+            //Assert
+            Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.Available));
+        }
+
+        [Test]
+        public void StationControl_RfidDetectedStateAvailableAndChargerConnected_LockDoor()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            var _charger = Substitute.For<ICharger>();
+            var _rfid = Substitute.For<IRFIDReader>();
+            _uut = new StationControl(_rfid, _display, _door);
+            _chargeControl = new ChargeControl(_charger);
+
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.Available;
+            _charger.Connected = true;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = 123 });
+            _rfid.RFIDEvent += _uut.RfidDetected;
+
+            //Assert
+            _door.Received().LockDoor();
+        }
 
         //}
 
