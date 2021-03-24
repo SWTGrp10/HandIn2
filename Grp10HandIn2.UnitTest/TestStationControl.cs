@@ -1,138 +1,166 @@
 using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.ComTypes;
 using Grp10HandIn2Libraries;
+using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
 
 namespace Grp10HandIn2.UnitTest
 {
-    //public class Tests
-    //{
-    //    private StationControl _uut;
-    //    private FakeDisplay _display;
-    //    private FakeCharger _charger;
-    //    private FakeDoor _door;
+    public class Tests
+    {
+        private StationControl _uut;
 
-    //    [SetUp]
-    //    public void Setup()
-    //    {
-    //        _display = new FakeDisplay();
-    //        _door = new FakeDoor();
-    //        _uut = new StationControl(new RFIDReader(), _display, _door);
-            
-    //    }
+        private DoorEventArgs _doorEvent;
 
-    //    [Test]
-    //    public void StationControl_DoorOpened_CallsConnectPhone()
-    //    {
-    //        _uut.DoorOpened();
-    //        Assert.That(_display.check, Is.EqualTo(1));
-    //    }
+        //private FakeDisplay _display;
+        //private FakeCharger _charger;
+        //private FakeDoor _door;
 
-    //    [Test]
-    //    public void StationControl_DoorOpened_ChargingCabinetStateDoorOpen()
-    //    {
-    //        _uut.DoorOpened();
-    //        Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.DoorOpen));
-    //    }
+        [SetUp]
+        public void Setup()
+        {
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            _uut = new StationControl(new RFIDReader(), _display, _door);
+            _doorEvent = null;
+            _door.DoorChangedEvent +=
+                ((sender, args) => { _doorEvent = args; });
+        }
 
-    //    [Test]
-    //    public void StationControl_DoorClosed_ReadRFID()
-    //    {
-    //        _uut.DoorClosed();
-    //        Assert.That(_display.check, Is.EqualTo(2));
-    //    }
+        [TestCase(true)]
+        [TestCase(false)]
+        public void StationControl_DoorChanged_CurrentBoolIsCorrect(bool doorChanged)
+        {
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            _uut = new StationControl(new RFIDReader(), _display, _door);
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs {OpenDoor = doorChanged});
+            Assert.That(_uut.doorOpen,Is.EqualTo(doorChanged));
+        }
 
-    //    [Test]
-    //    public void StationControl_DoorClosed_ChargingCabinetStateAvailable()
-    //    {
-    //        _uut.DoorClosed();
-    //        Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.Available));
-    //    }
+        [Test]
+        public void StationControl_DoorOpened_CallsConnectPhone()
+        {
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            _uut = new StationControl(new RFIDReader(), _display, _door);
+            _doorEvent = null;
+            _door.DoorChangedEvent +=
+                ((sender, args) => { _doorEvent = args; });
 
-    //    [Test]
-    //    public void StationControl_RfidDetectedStateAvailableAndChargerConnected_LockDoor()
-    //    {
-    //        _uut._state = StationControl.ChargingCabinetState.Available;
-    //        _uut._charger.Connected = true;
-    //        _uut.RfidDetected(new object(), new RFIDEventArgs());
-    //        Assert.That(_door.checkLock, Is.EqualTo(1));
-    //    }
+            _uut.DoorOpened(_door, _doorEvent);
+            _display.Received().ConnectPhone();
+        }
 
-    //}
+        //    [Test]
+        //    public void StationControl_DoorOpened_ChargingCabinetStateDoorOpen()
+        //    {
+        //        _uut.DoorOpened();
+        //        Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.DoorOpen));
+        //    }
 
-    //internal class FakeDoor: IDoor
-    //{
-    //    public int checkLock = 0;
+        //    [Test]
+        //    public void StationControl_DoorClosed_ReadRFID()
+        //    {
+        //        _uut.DoorClosed();
+        //        Assert.That(_display.check, Is.EqualTo(2));
+        //    }
 
-    //    public event EventHandler<DoorEventArgs> DoorEvent;
+        //    [Test]
+        //    public void StationControl_DoorClosed_ChargingCabinetStateAvailable()
+        //    {
+        //        _uut.DoorClosed();
+        //        Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.Available));
+        //    }
 
-    //    public void LockDoor()
-    //    {
-    //        checkLock = 1;
-    //    }
+        //    [Test]
+        //    public void StationControl_RfidDetectedStateAvailableAndChargerConnected_LockDoor()
+        //    {
+        //        _uut._state = StationControl.ChargingCabinetState.Available;
+        //        _uut._charger.Connected = true;
+        //        _uut.RfidDetected(new object(), new RFIDEventArgs());
+        //        Assert.That(_door.checkLock, Is.EqualTo(1));
+        //    }
 
-    //    public void UnlockDoor()
-    //    {
-    //        checkLock = 2;
-    //    }
+        //}
 
-    //    public void OnDoorOpen()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
+        //internal class FakeDoor : IDoor
+        //{
+        //    public int checkLock = 0;
 
-    //    public void OnDoorClose()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        //    public event EventHandler<DoorEventArgs> DoorEvent;
 
-    //internal class FakeCharger : ICharger
-    //{
-    //    public event EventHandler<CurrentEventArgs> CurrentValueEvent;
-    //    public double CurrentValue { get; }
-    //    public bool Connected { get; set; }
-    //    public void StartCharge()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
+        //    public void LockDoor()
+        //    {
+        //        checkLock = 1;
+        //    }
 
-    //    public void StopCharge()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        //    public void UnlockDoor()
+        //    {
+        //        checkLock = 2;
+        //    }
 
-    //internal class FakeDisplay : IDisplay
-    //{
-    //    public int check = 0;
-    //    public void ConnectPhone()
-    //    {
-    //        check = 1;
-    //    }
+        //    public void OnDoorOpen()
+        //    {
+        //        throw new NotImplementedException();
+        //    }
 
-    //    public void ReadRFID()
-    //    {
-    //        check = 2;
-    //    }
+        //    public void OnDoorClose()
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //}
 
-    //    public void ChargingCabinetTaken()
-    //    {
-    //        check = 3;
-    //    }
+        //internal class FakeCharger : ICharger
+        //{
+        //    public event EventHandler<CurrentEventArgs> CurrentValueEvent;
+        //    public double CurrentValue { get; }
+        //    public bool Connected { get; set; }
+        //    public void StartCharge()
+        //    {
+        //        throw new NotImplementedException();
+        //    }
 
-    //    public void ConnectionFail()
-    //    {
-    //        check = 4;
-    //    }
+        //    public void StopCharge()
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //}
 
-    //    public void RFIDFail()
-    //    {
-    //        check = 5;
-    //    }
+        //internal class FakeDisplay : IDisplay
+        //{
+        //    public int check = 0;
+        //    public void ConnectPhone()
+        //    {
+        //        check = 1;
+        //    }
 
-    //    public void RemovePhone()
-    //    {
-    //        check = 6;
-    //    }
-    //}
+        //    public void ReadRFID()
+        //    {
+        //        check = 2;
+        //    }
+
+        //    public void ChargingCabinetTaken()
+        //    {
+        //        check = 3;
+        //    }
+
+        //    public void ConnectionFail()
+        //    {
+        //        check = 4;
+        //    }
+
+        //    public void RFIDFail()
+        //    {
+        //        check = 5;
+        //    }
+
+        //    public void RemovePhone()
+        //    {
+        //        check = 6;
+        //    }
+    }
+
 }
