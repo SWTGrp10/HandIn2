@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using Grp10HandIn2Libraries;
-using NSubstitute;
 using NUnit.Framework;
 
 namespace Grp10HandIn2.UnitTest
 {
-    public class TestDoor
+    public class TestRFIDReader
     {
-        private Door _uut;
-        private DoorEventArgs _recievedEventArgs;
+        private RFIDReader _uut;
+        private RFIDEventArgs _recievedEventArgs;
 
         [SetUp]
         public void Setup()
         {
             _recievedEventArgs = null;
 
-            _uut = new Door();
+            _uut = new RFIDReader();
 
-            _uut.OpenCloseDoor(true);
-            _uut.DoorChangedEvent +=
+            _uut.ReadRFID(123);
+            _uut.RFIDEvent +=
                 ((o, args) => { _recievedEventArgs = args; });
         }
 
@@ -28,7 +27,7 @@ namespace Grp10HandIn2.UnitTest
         public void Door_DoorSetToNewValue_EventFired()
         {
             //Act
-            _uut.OpenCloseDoor(false);
+            _uut.ReadRFID(456);
 
             //Assert
             Assert.That(_recievedEventArgs, Is.Not.Null);
@@ -38,10 +37,10 @@ namespace Grp10HandIn2.UnitTest
         public void Door_DoorSetToNewValue_CorrectNewValueReceived()
         {
             //Act
-            _uut.OpenCloseDoor(false);
+            _uut.ReadRFID(456);
 
             //Assert
-            Assert.That(_recievedEventArgs.OpenDoor, Is.EqualTo(false));
+            Assert.That(_recievedEventArgs.RFID, Is.EqualTo(456));
         }
     }
 }
