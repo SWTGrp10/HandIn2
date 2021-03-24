@@ -152,6 +152,29 @@ namespace Grp10HandIn2.UnitTest
             _door.Received().LockDoor();
         }
 
+        //[Test]
+        //public void StationControl_RfidDetectedStateAvailableAndChargerNotConnected_ConnectionFailCalled()
+        //{
+        //    //Arrange
+        //    var _display = Substitute.For<IDisplay>();
+        //    var _door = Substitute.For<IDoor>();
+        //    var _charger = Substitute.For<ICharger>();
+        //    var _rfid = Substitute.For<IRFIDReader>();
+        //    _uut = new StationControl(_rfid, _display, _door);
+        //    _chargeControl = new ChargeControl(_charger);
+
+        //    //Act
+            
+            
+        //    _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = 123 });
+        //    _uut._state = StationControl.ChargingCabinetState.Available;
+        //    _charger.Connected = false;
+        //    _rfid.RFIDEvent += _uut.RfidDetected;
+
+        //    //Assert
+        //    _display.Received().ConnectionFail();
+        //}
+
         //}
 
         //internal class FakeDoor : IDoor
