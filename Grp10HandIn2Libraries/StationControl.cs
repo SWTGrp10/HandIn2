@@ -28,8 +28,8 @@ namespace Grp10HandIn2Libraries
         
         public StationControl(IRFIDReader rfidReader, IDisplay display, IDoor door)
         {
-            door.DoorOpenEvent += DoorOpened;
-            door.DoorCloseEvent += DoorClosed;
+            door.DoorChangedEvent += DoorOpened;
+            door.DoorChangedEvent += DoorClosed;
             rfidReader.RFIDEvent += RfidDetected;
             _chargeControl = new ChargeControl();
             _door = door;
@@ -93,30 +93,35 @@ namespace Grp10HandIn2Libraries
         // Her mangler de andre trigger handlere
         public void DoorOpened(object sender, DoorEventArgs e)
         {
-            if (_state == ChargingCabinetState.Available)
+            if (e.OpenDoor)
             {
-                _state = ChargingCabinetState.DoorOpen;
-                _door.DoOpenDoor();
-                _display.ConnectPhone();
-            }
-            else
-            {
-                Console.WriteLine("Not available");
+                if (_state == ChargingCabinetState.Available)
+                {
+                    _state = ChargingCabinetState.DoorOpen;
+                    Console.WriteLine("Døren er åbnet");
+                    _display.ConnectPhone();
+                }
+                else
+                {
+                    Console.WriteLine("Not available");
+                }
             }
         }
 
         public void DoorClosed(object sender, DoorEventArgs e)
         {
-            _display.ReadRFID();
-
-            if (_state == ChargingCabinetState.DoorOpen)
+            if (!e.OpenDoor)
             {
-                _state = ChargingCabinetState.Available;
-                _door.DoCloseDoor();
-            }
-            else
-            {
-                Console.WriteLine("Noob");
+                if (_state == ChargingCabinetState.DoorOpen)
+                {
+                    _state = ChargingCabinetState.Available;
+                    Console.WriteLine("Døren er lukket");
+                    _display.ReadRFID();
+                }
+                else
+                {
+                    Console.WriteLine("Døren kan ikke lukkes igen");
+                }
             }
         }
     }

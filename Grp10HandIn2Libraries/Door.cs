@@ -4,50 +4,15 @@ namespace Grp10HandIn2Libraries
 {
     public class Door : IDoor
     {
-        public event EventHandler<DoorEventArgs> DoorOpenEvent;
-        public event EventHandler<DoorEventArgs> DoorCloseEvent;
+        public event EventHandler<DoorEventArgs> DoorChangedEvent;
+
 
         public void OpenCloseDoor(bool openDoor)
         {
-            Console.WriteLine("Kontrollerer dør");
-
-            if (openDoor)
-            {
-                OnDoorOpen(new DoorEventArgs { OpenDoor = openDoor });
-            }
-            else
-            {
-                OnDoorClose(new DoorEventArgs { OpenDoor = openDoor });
-            }
-
-                
+            OnDoorChanged(new DoorEventArgs { OpenDoor = openDoor });
+            
         }
 
-        //public void CloseDoor(bool openDoor)
-        //{
-
-        //}
-
-        public void DoOpenDoor()
-        {
-            //Udskriv på display
-            Console.WriteLine("Door has been opened");
-
-        }
-
-
-        public void DoCloseDoor()
-        {
-            //Udskriv på display
-            Console.WriteLine("Door has been closed");
-
-        }
-
-        //public void CloseDoor()
-        //{
-        //    Console.WriteLine("Kontrollerer dør");
-        //    OnDoorClose(new DoorEventArgs {});
-        //}
 
         public void LockDoor()
         {
@@ -62,15 +27,11 @@ namespace Grp10HandIn2Libraries
             Console.WriteLine("Door has been unlocked");
         }
 
-        //Evt kun et event der sender boolen med
-        protected virtual void OnDoorOpen(DoorEventArgs e)
+
+        protected virtual void OnDoorChanged(DoorEventArgs e)
         {
-            DoorOpenEvent?.Invoke(this, e);
+            DoorChangedEvent?.Invoke(this, e);
         }
 
-        protected virtual void OnDoorClose(DoorEventArgs e)
-        {
-            DoorCloseEvent?.Invoke(this, e);
-        }
     }
 }

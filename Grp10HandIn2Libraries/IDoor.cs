@@ -6,13 +6,9 @@ namespace Grp10HandIn2Libraries
 {
     public interface IDoor
     {
-        event EventHandler<DoorEventArgs> DoorOpenEvent;
-        event EventHandler<DoorEventArgs> DoorCloseEvent;
+        event EventHandler<DoorEventArgs> DoorChangedEvent;
         void LockDoor();
 
         void UnlockDoor();
-
-        void DoOpenDoor();
-        void DoCloseDoor();
     }
 }
