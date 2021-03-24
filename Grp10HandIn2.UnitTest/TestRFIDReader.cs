@@ -24,7 +24,7 @@ namespace Grp10HandIn2.UnitTest
         }
 
         [Test]
-        public void Door_DoorSetToNewValue_EventFired()
+        public void RFIDReader_RFIDSetToNewValue_EventFired()
         {
             //Act
             _uut.ReadRFID(456);
@@ -34,7 +34,7 @@ namespace Grp10HandIn2.UnitTest
         }
 
         [Test]
-        public void Door_DoorSetToNewValue_CorrectNewValueReceived()
+        public void RFIDReader_RFIDSetToNewValue_CorrectNewValueReceived()
         {
             //Act
             _uut.ReadRFID(456);
