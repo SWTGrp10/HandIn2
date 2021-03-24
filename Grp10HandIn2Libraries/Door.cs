@@ -23,10 +23,11 @@ namespace Grp10HandIn2Libraries
                 
         }
 
-        public void CloseDoor(bool openDoor)
-        {
+        //public void CloseDoor(bool openDoor)
+        //{
 
-        }
+        //}
+
         public void DoOpenDoor()
         {
             //Udskriv på display
@@ -61,6 +62,7 @@ namespace Grp10HandIn2Libraries
             Console.WriteLine("Door has been unlocked");
         }
 
+        //Evt kun et event der sender boolen med
         protected virtual void OnDoorOpen(DoorEventArgs e)
         {
             DoorOpenEvent?.Invoke(this, e);
