@@ -17,7 +17,7 @@ namespace Grp10HandIn2Libraries
 
         // Her mangler flere member variable
         public ChargingCabinetState _state;
-        public ICharger _charger;
+        private ChargeControl _chargeControl;
         private int _oldId;
         private IDoor _door;
         private IDisplay _display;
@@ -32,7 +32,7 @@ namespace Grp10HandIn2Libraries
             door.DoorChangedEvent += DoorOpened;
             door.DoorChangedEvent += DoorClosed;
             rfidReader.RFIDEvent += RfidDetected;
-            _charger = new USBCharger();
+            _chargeControl = new ChargeControl();
             _door = door;
             _display = display;
             _logfile = new LogFile();
@@ -45,16 +45,17 @@ namespace Grp10HandIn2Libraries
             {
                 case ChargingCabinetState.Available:
                     // Check for ladeforbindelse
-                    if (_charger.Connected)
+                    if (_chargeControl.IsConnected())
                     {
                         _door.LockDoor();
-                        _charger.StartCharge();
+                        _chargeControl.StartCharge();
                         _oldId = e.RFID;
 
                         _logfile.WriteToLogLocked(_oldId);
                         
                         _display.ChargingCabinetTaken();
                         _state = ChargingCabinetState.Locked;
+                        
                     }
                     else
                     {
@@ -73,7 +74,7 @@ namespace Grp10HandIn2Libraries
                     // Check for correct ID
                     if (e.RFID == _oldId)
                     {
-                        _charger.StopCharge();
+                        _chargeControl.StopCharge();
                         _door.UnlockDoor();
                         
                         _logfile.WriteToLogUnlocked(_oldId);

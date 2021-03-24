@@ -12,5 +12,8 @@ namespace Grp10HandIn2Libraries
         void ConnectionFail();
         void RFIDFail();
         void RemovePhone();
+        void FullyCharged();
+        void UngoingCharge();
+        void ChargingFail();
     }
 }
