@@ -42,9 +42,6 @@ namespace Grp10HandIn2Libraries
 
         }
 
-
-
-
         //public void CloseDoor()
         //{
         //    Console.WriteLine("Kontrollerer dør");
@@ -73,10 +70,5 @@ namespace Grp10HandIn2Libraries
         {
             DoorCloseEvent?.Invoke(this, e);
         }
-    }
-
-    public class DoorEventArgs : EventArgs
-    {
-        public bool OpenDoor { get; set; }
     }
 }
