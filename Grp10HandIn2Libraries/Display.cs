@@ -35,5 +35,20 @@ namespace Grp10HandIn2Libraries
         {
             Console.WriteLine("Tag din telefon ud af skabet og luk døren");
         }
+
+        public void FullyCharged()
+        {
+            Console.WriteLine("Telefonen er fuldt opladet");
+        }
+
+        public void UngoingCharge()
+        {
+            Console.WriteLine("Opladning er i gang");
+        }
+
+        public void ChargingFail()
+        {
+            Console.WriteLine("Mulig kortslutning, fjern telefon");
+        }
     }
 }

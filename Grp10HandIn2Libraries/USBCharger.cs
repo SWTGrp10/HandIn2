@@ -109,7 +109,7 @@ namespace Grp10HandIn2Libraries
             _charging = false;
         }
 
-        private void OnNewCurrent()
+        protected virtual void OnNewCurrent()
         {
             CurrentValueEvent?.Invoke(this, new CurrentEventArgs() { Current = this.CurrentValue });
         }
