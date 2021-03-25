@@ -4,20 +4,21 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    public class ChargeControl
+    public class ChargeControl : IChargeControl
     {
-        ICharger usb = new USBCharger();
+        ICharger usb;
         IDisplay display = new Display();
-        private double nowCurrent = new double();
+        
 
         public ChargeControl(ICharger usbCharger)
         {
-            usbCharger.CurrentValueEvent += Charging;
+            usb = usbCharger;
+            usb.CurrentValueEvent += Charging;
         }
 
         public ChargeControl()
         {
-
+            
         }
 
         public bool IsConnected()
@@ -26,9 +27,10 @@ namespace Grp10HandIn2Libraries
 
         }
 
+
         public void StartCharge()
         {
-            if (IsConnected())
+            if (usb.Connected)
             {
                 usb.StartCharge();
 
@@ -42,20 +44,20 @@ namespace Grp10HandIn2Libraries
 
         public void Charging(object sender, CurrentEventArgs e)
         {
-            nowCurrent = e.Current;
+
             if (usb.Connected)
             {
-                if (nowCurrent != 0)
+                if (e.Current != 0)
                 {
-                    if (nowCurrent > 0 && e.Current < 5)
+                    if (e.Current > 0 && e.Current < 5)
                     {
                         display.FullyCharged();
                     }
-                    else if (nowCurrent > 5 && e.Current < 500)
+                    else if (e.Current > 5 && e.Current < 500)
                     {
-                        display.OngoingCharge();
+                        display.OngoingCharge(e.Current);
                     }
-                    else if (nowCurrent > 500)
+                    else if (e.Current > 500)
                     {
                         display.ChargingFail();
                     }
@@ -63,6 +65,7 @@ namespace Grp10HandIn2Libraries
 
             }
         }
+
         public void StopCharge()
         {
             if (usb.Connected)

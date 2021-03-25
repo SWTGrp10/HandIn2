@@ -49,9 +49,9 @@ namespace Grp10HandIn2Libraries
             Console.WriteLine(DisplayString);
         }
 
-        public void OngoingCharge()
+        public void OngoingCharge(double current)
         {
-            DisplayString = "Opladning er i gang";
+            DisplayString = "Opladning er i gang, strømmen er: " + current;
             Console.WriteLine(DisplayString);
         }
 
