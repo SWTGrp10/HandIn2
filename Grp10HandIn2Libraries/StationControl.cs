@@ -17,7 +17,7 @@ namespace Grp10HandIn2Libraries
 
         // Her mangler flere member variable
         public ChargingCabinetState _state;
-        private ICharger _chargeControl;
+        private IChargeControl _chargeControl;
         private int _oldId;
         private IDoor _door;
         private IDisplay _display;
@@ -26,7 +26,7 @@ namespace Grp10HandIn2Libraries
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         
-        public StationControl(IRFIDReader rfidReader, IDisplay display, IDoor door, ICharger charger)
+        public StationControl(IRFIDReader rfidReader, IDisplay display, IDoor door, IChargeControl charger)
         {
             door.DoorChangedEvent += DoorOpened;
             door.DoorChangedEvent += DoorClosed;
