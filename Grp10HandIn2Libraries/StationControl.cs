@@ -7,6 +7,7 @@ namespace Grp10HandIn2Libraries
 {
     public class StationControl
     {
+        public bool doorOpen { get; private set; }
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         public enum ChargingCabinetState
         {
@@ -93,7 +94,8 @@ namespace Grp10HandIn2Libraries
         // Her mangler de andre trigger handlere
         public void DoorOpened(object sender, DoorEventArgs e)
         {
-            if (e.OpenDoor)
+            doorOpen = e.OpenDoor;
+            if (doorOpen)
             {
                 if (_state == ChargingCabinetState.Available)
                 {
@@ -110,7 +112,8 @@ namespace Grp10HandIn2Libraries
 
         public void DoorClosed(object sender, DoorEventArgs e)
         {
-            if (!e.OpenDoor)
+            doorOpen = e.OpenDoor;
+            if (!doorOpen)
             {
                 if (_state == ChargingCabinetState.DoorOpen)
                 {
