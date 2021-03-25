@@ -418,7 +418,6 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
-            
 
             //Act
             _uut._state = StationControl.ChargingCabinetState.Locked;
@@ -443,7 +442,7 @@ namespace Grp10HandIn2.UnitTest
 
         public void Charging(object sender, CurrentEventArgs e)
         {
-            calledMethod = 1;
+            throw new NotImplementedException();
         }
 
         public void StartCharge()
