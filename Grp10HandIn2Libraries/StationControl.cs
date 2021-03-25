@@ -17,12 +17,11 @@ namespace Grp10HandIn2Libraries
 
         // Her mangler flere member variable
         public ChargingCabinetState _state;
-        private ChargeControl _chargeControl;
+        private IChargeControl _chargeControl;
         public int _oldId;
         private IDoor _door;
         private IDisplay _display;
         private ILogFile _logfile;
-        public bool doorOpen { get; private set; }
 
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
@@ -94,8 +93,7 @@ namespace Grp10HandIn2Libraries
         // Her mangler de andre trigger handlere
         public void DoorOpened(object sender, DoorEventArgs e)
         {
-            doorOpen = e.OpenDoor;
-            if (doorOpen)
+            if (e.OpenDoor)
             {
                 if (_state == ChargingCabinetState.Available)
                 {
@@ -112,8 +110,7 @@ namespace Grp10HandIn2Libraries
 
         public void DoorClosed(object sender, DoorEventArgs e)
         {
-            doorOpen = e.OpenDoor;
-            if (!doorOpen)
+            if (!e.OpenDoor)
             {
                 if (_state == ChargingCabinetState.DoorOpen)
                 {
