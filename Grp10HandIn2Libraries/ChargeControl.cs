@@ -6,19 +6,16 @@ namespace Grp10HandIn2Libraries
 {
     public class ChargeControl
     {
-        ICharger usb = new USBCharger();
+        ICharger usb;
         IDisplay display = new Display();
         private double nowCurrent = new double();
 
         public ChargeControl(ICharger usbCharger)
         {
-            usbCharger.CurrentValueEvent += Charging;
+            usb = usbCharger;
+            usb.CurrentValueEvent += Charging;
         }
 
-        public ChargeControl()
-        {
-            
-        }
         public bool IsConnected()
         {
             return usb.Connected;
@@ -27,7 +24,7 @@ namespace Grp10HandIn2Libraries
 
         public void StartCharge()
         {
-            if (IsConnected())
+            if (usb.Connected)
             {
                 usb.StartCharge();
                 
