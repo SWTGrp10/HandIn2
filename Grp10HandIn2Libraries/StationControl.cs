@@ -18,8 +18,7 @@ namespace Grp10HandIn2Libraries
         // Her mangler flere member variable
         public ChargingCabinetState _state;
         private ChargeControl _chargeControl;
-        //har lavet oldID om til public da den viste fejl. Kh Emma
-        public int _oldId;
+        private int _oldId;
         private IDoor _door;
         private IDisplay _display;
         private ILogFile _logfile;
@@ -48,13 +47,13 @@ namespace Grp10HandIn2Libraries
                     if (_chargeControl.IsConnected())
                     {
                         _door.LockDoor();
-                        _chargeControl.StartCharge();
                         _oldId = e.RFID;
 
                         _logfile.WriteToLogLocked(_oldId);
                         
                         _display.ChargingCabinetTaken();
                         _state = ChargingCabinetState.Locked;
+                        _chargeControl.StartCharge();
                         
                     }
                     else

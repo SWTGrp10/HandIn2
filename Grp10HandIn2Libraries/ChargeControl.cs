@@ -8,7 +8,8 @@ namespace Grp10HandIn2Libraries
     {
         ICharger usb = new USBCharger();
         IDisplay display = new Display();
-        private double current;
+        private double nowCurrent = new double();
+
         public ChargeControl(ICharger usbCharger)
         {
             usbCharger.CurrentValueEvent += Charging;
@@ -27,15 +28,17 @@ namespace Grp10HandIn2Libraries
 
         public void StartCharge()
         {
-            if (usb.Connected)
+            if (IsConnected())
             {
                 usb.StartCharge();
+                
             }
             else
             {
               display.ConnectPhone();
             }
         }
+
 
         public void Charging(object sender, CurrentEventArgs e)
         {
@@ -50,18 +53,15 @@ namespace Grp10HandIn2Libraries
                     }
                     else if (current > 5 && e.Current < 500)
                     {
-                        display.UngoingCharge();
+                        display.OngoingCharge();
                     }
                     else if (current > 500)
                     {
                         display.ChargingFail();
                     }
                 }
-                else
-                {
-                    //Displayet viser ikke noget
-                }
-            }
+                
+            
         }
 
         public void StopCharge()

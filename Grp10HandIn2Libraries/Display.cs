@@ -6,60 +6,72 @@ namespace Grp10HandIn2Libraries
 {
     public class Display : IDisplay
     {
+        public string DisplayString { get; private set; }
         public void ConnectPhone()
         {
-            Console.WriteLine("Tilslut telefon");
+            DisplayString = "Tilslut telefon";
+            Console.WriteLine(DisplayString);
         }
 
         public void ReadRFID()
         {
-            Console.WriteLine("Indlæs RFID");
+            DisplayString = "Indlæs RFID";
+            Console.WriteLine(DisplayString);
         }
 
         public void ChargingCabinetTaken()
         {
-            Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
+            DisplayString = "Skabet er låst, og din telefon lades. Brug dit RFID tag til at låse op.";
+            Console.WriteLine(DisplayString);
         }
 
         public void ConnectionFail()
         {
-            Console.WriteLine("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
+            DisplayString = "Din telefon er ikke ordentlig tilsluttet. Prøv igen.";
+            Console.WriteLine(DisplayString);
         }
 
         public void RFIDFail()
         {
-            Console.WriteLine("Forkert RFID tag");
+            DisplayString = "Forkert RFID tag";
+            Console.WriteLine(DisplayString);
         }
 
         public void RemovePhone()
         {
-            Console.WriteLine("Tag din telefon ud af skabet og luk døren");
+            DisplayString="Tag din telefon ud af skabet og luk døren";
+            Console.WriteLine(DisplayString);
         }
 
         public void FullyCharged()
         {
-            Console.WriteLine("Telefonen er fuldt opladet");
+            DisplayString = "Telefonen er fuldt opladet";
+            Console.WriteLine(DisplayString);
         }
 
-        public void UngoingCharge()
+        public void OngoingCharge()
         {
-            Console.WriteLine("Opladning er i gang");
+            DisplayString = "Opladning er i gang";
+            Console.WriteLine(DisplayString);
         }
 
         public void ChargingFail()
         {
-            Console.WriteLine("Mulig kortslutning, fjern telefon");
+            DisplayString = "Mulig kortslutning, fjern telefon";
+            Console.WriteLine(DisplayString);
         }
 
         //Har implementeret disse metoder, da de var i interface og viste fejl. Kh Emma
         public void NotAvailable()
         {
-            throw new NotImplementedException();
+            DisplayString = "Ladeskab optaget";
+            Console.WriteLine(DisplayString);
         }
 
         public void CloseDoor()
         {
-            throw new NotImplementedException();
+            DisplayString = "Luk venligst døren";
+            Console.WriteLine(DisplayString);
         }
     }
 }

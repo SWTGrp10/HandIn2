@@ -11,6 +11,7 @@ namespace Grp10HandIn2.UnitTest
     {
         private Door _uut;
         private DoorEventArgs _recievedEventArgs;
+        private string testString;
 
         [SetUp]
         public void Setup()
@@ -42,6 +43,26 @@ namespace Grp10HandIn2.UnitTest
 
             //Assert
             Assert.That(_recievedEventArgs.OpenDoor, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Door_LockDoor_CorrectStringOutput()
+        {
+            testString = "Door has been locked";
+            _uut.LockDoor();
+
+            Assert.That(_uut.DoorString, Is.EqualTo(testString));
+
+        }
+
+        [Test]
+        public void Door_UnLockDoor_CorrectStringOutput()
+        {
+            testString = "Door has been unlocked";
+            _uut.UnlockDoor();
+
+            Assert.That(_uut.DoorString, Is.EqualTo(testString));
+
         }
     }
 }
