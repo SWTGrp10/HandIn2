@@ -49,6 +49,7 @@ namespace Grp10HandIn2
 
                         int id = Convert.ToInt32(idString);
                         rfidReader.ReadRFID(id);
+
                         break;
 
                     default:

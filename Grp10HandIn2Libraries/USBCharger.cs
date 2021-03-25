@@ -80,6 +80,7 @@ namespace Grp10HandIn2Libraries
                 if (Connected && !_overload)
                 {
                     CurrentValue = 500;
+
                 }
                 else if (Connected && _overload)
                 {
