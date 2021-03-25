@@ -66,7 +66,7 @@ namespace Grp10HandIn2Libraries
 
                 case ChargingCabinetState.DoorOpen:
                 {
-                    Console.WriteLine("Please close door");
+                    _display.CloseDoor();
                 }
                     break;
 
@@ -105,7 +105,7 @@ namespace Grp10HandIn2Libraries
                 }
                 else
                 {
-                    Console.WriteLine("Not available");
+                    _display.NotAvailable();
                 }
             }
         }
