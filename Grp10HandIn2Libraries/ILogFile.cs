@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Grp10HandIn2Libraries
 {
-    interface ILogFile
+    public interface ILogFile
     {
+        void WriteToLogLocked(int id);
+        void WriteToLogUnlocked(int id);
     }
 }
