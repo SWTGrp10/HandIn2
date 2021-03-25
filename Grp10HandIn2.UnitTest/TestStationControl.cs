@@ -12,7 +12,7 @@ namespace Grp10HandIn2.UnitTest
     {
         private StationControl _uut;
         private DoorEventArgs _doorEvent;
-
+        private int rfid = 321;
         
 
         [TestCase(true)]
@@ -148,11 +148,55 @@ namespace Grp10HandIn2.UnitTest
             //Act
             _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = true;
-            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = 123 });
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Assert
             _door.Received().LockDoor();
+        }
+
+        [Test]
+        public void StationControl_RfidDetectedStateAvailableAndChargerConnected_WriteToLog()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            var _charger = Substitute.For<ICharger>();
+            var _log = Substitute.For<ILogFile>();
+            var _rfid = Substitute.For<IRFIDReader>();
+            var _chargeControl = new ChargeControl(_charger);
+            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            _uut._logfile = _log;
+            
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.Available;
+            _charger.Connected = true;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
+            _rfid.RFIDEvent += _uut.RfidDetected;
+
+            //Assert
+            _log.Received().WriteToLogLocked(rfid);
+        }
+
+        [Test]
+        public void StationControl_RfidDetectedStateAvailableAndChargerConnected_StartCharge()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            var _charger = Substitute.For<ICharger>();
+            var _rfid = Substitute.For<IRFIDReader>();
+            FakeChargeControl _chargeControl = new FakeChargeControl();
+            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.Available;
+            _chargeControl.connected = true;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
+            _rfid.RFIDEvent += _uut.RfidDetected;
+
+            //Assert
+            Assert.That(_chargeControl.calledMethod, Is.EqualTo(2));
         }
 
         [TestCase(123)]
@@ -191,7 +235,7 @@ namespace Grp10HandIn2.UnitTest
             //Act
             _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = true;
-            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = 123 });
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Assert
@@ -212,7 +256,7 @@ namespace Grp10HandIn2.UnitTest
             //Act
             _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = true;
-            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = 123 });
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Assert
@@ -233,7 +277,7 @@ namespace Grp10HandIn2.UnitTest
             //Act
             _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = false;
-            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = 123 });
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Assert
@@ -254,7 +298,7 @@ namespace Grp10HandIn2.UnitTest
             //Act
             _uut._state = StationControl.ChargingCabinetState.DoorOpen;
             _charger.Connected = true;
-            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = 123 });
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Assert
@@ -302,6 +346,49 @@ namespace Grp10HandIn2.UnitTest
         }
 
         [Test]
+        public void StationControl_RfidDetectedStateLockedAndOldidEqualsRFID_StopCharge()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            var _charger = Substitute.For<ICharger>();
+            var _rfid = Substitute.For<IRFIDReader>();
+            FakeChargeControl _chargeControl = new FakeChargeControl();
+            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+
+            //Act
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.Locked;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
+            _rfid.RFIDEvent += _uut.RfidDetected;
+
+            //Assert
+            Assert.That(_chargeControl.calledMethod, Is.EqualTo(3));
+        }
+
+        [Test]
+        public void StationControl_RfidDetectedStateLockedAndOldidEqualsRFID_WriteToLog()
+        {
+            //Arrange
+            var _display = Substitute.For<IDisplay>();
+            var _door = Substitute.For<IDoor>();
+            var _charger = Substitute.For<ICharger>();
+            var _log = Substitute.For<ILogFile>();
+            var _rfid = Substitute.For<IRFIDReader>();
+            var _chargeControl = new ChargeControl(_charger);
+            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            _uut._logfile = _log;
+
+            //Act
+            _uut._state = StationControl.ChargingCabinetState.Locked;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
+            _rfid.RFIDEvent += _uut.RfidDetected;
+
+            //Assert
+            _log.Received().WriteToLogUnlocked(_uut._oldId);
+        }
+
+        [Test]
         public void StationControl_RfidDetectedStateLockedAndOldidEqualsRFID_ChargingCabinetStateLocked()
         {
             //Arrange
@@ -344,4 +431,29 @@ namespace Grp10HandIn2.UnitTest
         }
     }
 
+    public class FakeChargeControl : IChargeControl
+    {
+        public bool connected { get; set; }
+        public int calledMethod = 0;
+
+        public bool IsConnected()
+        {
+            return connected;
+        }
+
+        public void Charging(object sender, CurrentEventArgs e)
+        {
+            calledMethod = 1;
+        }
+
+        public void StartCharge()
+        {
+            calledMethod = 2;
+        }
+
+        public void StopCharge()
+        {
+            calledMethod = 3;
+        }
+    }
 }

@@ -22,7 +22,7 @@ namespace Grp10HandIn2Libraries
         public int _oldId;
         private IDoor _door;
         private IDisplay _display;
-        private ILogFile _logfile;
+        public ILogFile _logfile;
 
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
