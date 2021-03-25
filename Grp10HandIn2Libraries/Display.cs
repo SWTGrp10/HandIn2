@@ -51,14 +51,15 @@ namespace Grp10HandIn2Libraries
             Console.WriteLine("Mulig kortslutning, fjern telefon");
         }
 
+        //Har implementeret disse metoder, da de var i interface og viste fejl. Kh Emma
         public void NotAvailable()
         {
-            Console.WriteLine("Not available");
+            throw new NotImplementedException();
         }
 
         public void CloseDoor()
         {
-            Console.WriteLine("Please close door");
+            throw new NotImplementedException();
         }
     }
 }

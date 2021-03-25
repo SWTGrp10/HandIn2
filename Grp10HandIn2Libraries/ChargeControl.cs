@@ -8,7 +8,7 @@ namespace Grp10HandIn2Libraries
     {
         ICharger usb = new USBCharger();
         IDisplay display = new Display();
-
+        private double current;
         public ChargeControl(ICharger usbCharger)
         {
             usbCharger.CurrentValueEvent += Charging;
@@ -18,6 +18,7 @@ namespace Grp10HandIn2Libraries
         {
             
         }
+
         public bool IsConnected()
         {
             return usb.Connected;
@@ -38,19 +39,20 @@ namespace Grp10HandIn2Libraries
 
         public void Charging(object sender, CurrentEventArgs e)
         {
+            current = e.Current;
             if (usb.Connected)
             {
-                if (e.Current != 0)
+                if (current != 0)
                 {
-                    if (e.Current > 0 && e.Current < 5)
+                    if (current > 0 && e.Current < 5)
                     {
                         display.FullyCharged();
                     }
-                    else if (e.Current > 5 && e.Current < 500)
+                    else if (current > 5 && e.Current < 500)
                     {
                         display.UngoingCharge();
                     }
-                    else if (e.Current > 500)
+                    else if (current > 500)
                     {
                         display.ChargingFail();
                     }
