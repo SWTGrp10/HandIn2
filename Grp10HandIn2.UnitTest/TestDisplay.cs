@@ -87,15 +87,15 @@ namespace Grp10HandIn2.UnitTest
 
         }
 
-        //[Test]
-        //public void Display_OngoingCharge_CorrectStringOutput()
-        //{
-        //    testString = "Opladning er i gang";
-        //    _uut.OngoingCharge();
+        [Test]
+        public void Display_OngoingCharge_CorrectStringOutput()
+        {
+            testString = "Opladning er i gang, strømmen er: 5";
+            _uut.OngoingCharge(5);
 
-        //    Assert.That(_uut.DisplayString, Is.EqualTo(testString));
+            Assert.That(_uut.DisplayString, Is.EqualTo(testString));
 
-        //}
+        }
 
         [Test]
         public void Display_ChargingFail_CorrectStringOutput()
