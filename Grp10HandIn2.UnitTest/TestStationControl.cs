@@ -164,7 +164,7 @@ namespace Grp10HandIn2.UnitTest
             var _charger = Substitute.For<ICharger>();
             var _log = Substitute.For<ILogFile>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
             _uut._logfile = _log;
             
@@ -375,7 +375,7 @@ namespace Grp10HandIn2.UnitTest
             var _charger = Substitute.For<ICharger>();
             var _log = Substitute.For<ILogFile>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
             _uut._logfile = _log;
 
