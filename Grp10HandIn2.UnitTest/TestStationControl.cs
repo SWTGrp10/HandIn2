@@ -12,7 +12,6 @@ namespace Grp10HandIn2.UnitTest
     {
         private StationControl _uut;
         private ChargeControl _chargeControl;
-
         private DoorEventArgs _doorEvent;
 
 
