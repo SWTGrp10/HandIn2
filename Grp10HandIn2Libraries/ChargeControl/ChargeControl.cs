@@ -31,7 +31,7 @@ namespace Grp10HandIn2Libraries
                 usb.StartCharge();
 
             }
-            else
+            else if(!usb.Connected)
             {
                 display.ConnectPhone();
             }

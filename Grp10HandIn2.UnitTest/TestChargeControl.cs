@@ -12,6 +12,7 @@ namespace Grp10HandIn2.UnitTest
     {
         private IChargeControl _uut;
         private ICharger _charger;
+        private IDisplay _display;
 
         [SetUp]
         public void Setup()
@@ -21,19 +22,34 @@ namespace Grp10HandIn2.UnitTest
         }
 
         [Test]
-        public void ChargeControl_StartCharge_usb_startChargeIsCalled()
+        public void ChargeControl_StartCharge_ConnectedIsTrue_startChargeIsCalled()
         {
             //Arrange
             _charger = Substitute.For<ICharger>();
             _uut = new ChargeControl(_charger);
-
+            _charger.Connected = true;
 
             //Act
-            _charger.CurrentValueEvent += Raise.Event(new CurrentEventArgs{})
-            += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
-            _door.DoorChangedEvent += _uut.DoorClosed;
+            _uut.StartCharge();
 
             //Assert
-            _display.Received().ReadRFID();
+            _charger.Received().StartCharge();
         }
+
+        [Test]
+        public void ChargeControl_StartCharge_ConnectedIsFalse_startChargeIsCalled()
+        {
+            //Arrange
+            _charger = Substitute.For<ICharger>();
+            _display = Substitute.For<IDisplay>();
+            _uut = new ChargeControl(_charger);
+            _charger.Connected = false;
+
+            //Act
+            _uut.StartCharge();
+
+            //Assert
+            _display.Received().ConnectPhone();
+        }
+    }
 }
