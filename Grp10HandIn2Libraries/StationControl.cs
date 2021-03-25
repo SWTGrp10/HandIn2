@@ -27,12 +27,12 @@ namespace Grp10HandIn2Libraries
         //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         
-        public StationControl(IRFIDReader rfidReader, IDisplay display, IDoor door)
+        public StationControl(IRFIDReader rfidReader, IDisplay display, IDoor door, IChargeControl charger)
         {
             door.DoorChangedEvent += DoorOpened;
             door.DoorChangedEvent += DoorClosed;
             rfidReader.RFIDEvent += RfidDetected;
-            _chargeControl = new ChargeControl();
+            _chargeControl = charger;
             _door = door;
             _display = display;
             _logfile = new LogFile();

@@ -49,9 +49,9 @@ namespace Grp10HandIn2Libraries
             Console.WriteLine(DisplayString);
         }
 
-        public void OngoingCharge()
+        public void OngoingCharge(double current)
         {
-            DisplayString = "Opladning er i gang";
+            DisplayString = "Opladning er i gang, strømmen er: " + current;
             Console.WriteLine(DisplayString);
         }
 
@@ -61,6 +61,7 @@ namespace Grp10HandIn2Libraries
             Console.WriteLine(DisplayString);
         }
 
+        //Har implementeret disse metoder, da de var i interface og viste fejl. Kh Emma
         public void NotAvailable()
         {
             DisplayString = "Ladeskab optaget";
