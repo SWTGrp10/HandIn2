@@ -7,11 +7,12 @@ namespace Grp10HandIn2Libraries
     public class ChargeControl : IChargeControl
     {
         ICharger usb;
-        IDisplay display = new Display();
+        IDisplay display;
         
 
-        public ChargeControl(ICharger usbCharger)
+        public ChargeControl(ICharger usbCharger, IDisplay Display)
         {
+            display = Display;
             usb = usbCharger;
             usb.CurrentValueEvent += Charging;
         }
