@@ -17,7 +17,7 @@ namespace Grp10HandIn2Libraries
 
         public ChargeControl()
         {
-            
+
         }
 
         public bool IsConnected()
@@ -31,39 +31,38 @@ namespace Grp10HandIn2Libraries
             if (IsConnected())
             {
                 usb.StartCharge();
-                
+
             }
             else
             {
-              display.ConnectPhone();
+                display.ConnectPhone();
             }
         }
 
 
         public void Charging(object sender, CurrentEventArgs e)
         {
-            current = e.Current;
+            nowCurrent = e.Current;
             if (usb.Connected)
             {
-                if (current != 0)
+                if (nowCurrent != 0)
                 {
-                    if (current > 0 && e.Current < 5)
+                    if (nowCurrent > 0 && e.Current < 5)
                     {
                         display.FullyCharged();
                     }
-                    else if (current > 5 && e.Current < 500)
+                    else if (nowCurrent > 5 && e.Current < 500)
                     {
                         display.OngoingCharge();
                     }
-                    else if (current > 500)
+                    else if (nowCurrent > 500)
                     {
                         display.ChargingFail();
                     }
                 }
-                
-            
-        }
 
+            }
+        }
         public void StopCharge()
         {
             if (usb.Connected)
