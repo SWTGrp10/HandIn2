@@ -61,6 +61,7 @@ namespace Grp10HandIn2Libraries
             Console.WriteLine(DisplayString);
         }
 
+        //Har implementeret disse metoder, da de var i interface og viste fejl. Kh Emma
         public void NotAvailable()
         {
             DisplayString = "Ladeskab optaget";

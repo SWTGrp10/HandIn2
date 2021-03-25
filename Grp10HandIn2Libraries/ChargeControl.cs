@@ -38,18 +38,20 @@ namespace Grp10HandIn2Libraries
 
         public void Charging(object sender, CurrentEventArgs e)
         {
-            nowCurrent = e.Current;  
-                if (nowCurrent != 0)
+            current = e.Current;
+            if (usb.Connected)
+            {
+                if (current != 0)
                 {
-                    if (nowCurrent > 0 && nowCurrent < 5)
+                    if (current > 0 && e.Current < 5)
                     {
                         display.FullyCharged();
                     }
-                    else if (nowCurrent > 5 && nowCurrent < 500)
+                    else if (current > 5 && e.Current < 500)
                     {
                         display.OngoingCharge();
                     }
-                    else if (nowCurrent > 500)
+                    else if (current > 500)
                     {
                         display.ChargingFail();
                     }
