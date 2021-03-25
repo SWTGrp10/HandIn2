@@ -16,10 +16,6 @@ namespace Grp10HandIn2Libraries
             usb.CurrentValueEvent += Charging;
         }
 
-        public ChargeControl()
-        {
-            
-        }
 
         public bool IsConnected()
         {
