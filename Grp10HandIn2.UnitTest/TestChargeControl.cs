@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Grp10HandIn2Libraries;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
-using System.Threading;
 
 namespace Grp10HandIn2.UnitTest
 
@@ -27,7 +27,8 @@ namespace Grp10HandIn2.UnitTest
         {
             //Arrange
             _charger = Substitute.For<ICharger>();
-            _uut = new ChargeControl(_charger);
+            _display = Substitute.For<IDisplay>();
+            _uut = new ChargeControl(_charger, _display);
             _charger.Connected = true;
 
             //Act
@@ -43,7 +44,7 @@ namespace Grp10HandIn2.UnitTest
             //Arrange
             _charger = Substitute.For<ICharger>();
             _display = Substitute.For<IDisplay>();
-            _uut = new ChargeControl(_charger);
+            _uut = new ChargeControl(_charger, _display);
             _charger.Connected = false;
 
             //Act
@@ -58,7 +59,8 @@ namespace Grp10HandIn2.UnitTest
         {
             //Arrange
             _charger = Substitute.For<ICharger>();
-            _uut = new ChargeControl(_charger);
+            _display = Substitute.For<IDisplay>();
+            _uut = new ChargeControl(_charger, _display);
             _charger.Connected = true;
 
             //Act
@@ -74,7 +76,8 @@ namespace Grp10HandIn2.UnitTest
         {
             //Arrange
             _charger = Substitute.For<ICharger>();
-            _uut = new ChargeControl(_charger);
+            _display = Substitute.For<IDisplay>();
+            _uut = new ChargeControl(_charger,_display);
 
             //Act
             _charger.Connected = charger_Connected;
@@ -90,7 +93,7 @@ namespace Grp10HandIn2.UnitTest
             //Arrange
             _charger = Substitute.For<ICharger>();
             _display = Substitute.For<IDisplay>();
-            _uut = new ChargeControl(_charger);
+            _uut = new ChargeControl(_charger,_display);
             _charger.Connected = true;
 
             //Act
@@ -98,32 +101,50 @@ namespace Grp10HandIn2.UnitTest
             _charger.CurrentValueEvent += _uut.Charging;
 
             //Assert
-            _display.Received().FullyCharged();
+            _display.Received(1).FullyCharged();
         }
 
 
-        [Test]
-        public void ChargeControl_Charging_CurrentIs300_DisplayRecievesOnGoingCharge()
+        [TestCase(499.7)]
+        [TestCase(5.5)]
+        public void ChargeControl_Charging_CurrentIs300_DisplayRecievesOnGoingCharge(double current)
         {
             //Arrange
             _charger = Substitute.For<ICharger>();
+            _display = Substitute.For<IDisplay>();
+            _uut = new ChargeControl(_charger, _display);
 
             _charger.Connected = true;
-            _display = Substitute.For<IDisplay>();
 
-            _uut = new ChargeControl(_charger);
-            System.Threading.Thread.Sleep(1100);
 
             //Act
-            _charger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs());
+            _charger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs { Current = current });
             _charger.CurrentValueEvent += _uut.Charging;
 
             
-
             //Assert
-            _display.Received().OngoingCharge(302.1);
+            _display.Received().OngoingCharge(current);
         }
 
+        [TestCase(500.5)]
+        public void ChargeControl_Charging_CurrentOver500_DisplayRecievesChargingFail(double current)
+        {
+            //Arrange
+            _charger = Substitute.For<ICharger>();
+            _display = Substitute.For<IDisplay>();
+            _uut = new ChargeControl(_charger, _display);
+
+            _charger.Connected = true;
+
+
+            //Act
+            _charger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs { Current = current });
+            _charger.CurrentValueEvent += _uut.Charging;
+
+
+            //Assert
+            _display.Received().ChargingFail();
+        }
 
     }
 }

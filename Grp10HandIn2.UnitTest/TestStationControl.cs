@@ -24,7 +24,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -42,7 +42,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -61,7 +61,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -81,7 +81,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -102,7 +102,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -122,7 +122,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -142,7 +142,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -164,7 +164,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -185,7 +185,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -206,7 +206,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -227,7 +227,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -248,7 +248,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -269,7 +269,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -289,7 +289,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -309,7 +309,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
 
             //Act
@@ -329,7 +329,7 @@ namespace Grp10HandIn2.UnitTest
             var _door = Substitute.For<IDoor>();
             var _charger = Substitute.For<ICharger>();
             var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger);
+            var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
             
 
