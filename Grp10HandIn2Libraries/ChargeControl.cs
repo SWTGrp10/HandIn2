@@ -48,7 +48,7 @@ namespace Grp10HandIn2Libraries
                     }
                     else if (e.Current > 5 && e.Current < 500)
                     {
-                        display.UngoingCharge();
+                        display.OngoingCharge();
                     }
                     else if (e.Current > 500)
                     {
