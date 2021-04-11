@@ -97,16 +97,11 @@ namespace Grp10HandIn2Libraries
             doorOpen = e.OpenDoor;
             if (doorOpen)
             {
-                if (_state == ChargingCabinetState.Available)
-                {
-                    _state = ChargingCabinetState.DoorOpen;
-                    Console.WriteLine("Døren er åbnet");
-                    _display.ConnectPhone();
-                }
-                else
-                {
-                    _display.NotAvailable();
-                }
+                
+                _state = ChargingCabinetState.DoorOpen;
+                Console.WriteLine("Døren er åbnet");
+                _display.ConnectPhone();
+                
             }
         }
 
@@ -115,16 +110,9 @@ namespace Grp10HandIn2Libraries
             doorOpen = e.OpenDoor;
             if (!doorOpen)
             {
-                if (_state == ChargingCabinetState.DoorOpen)
-                {
-                    _state = ChargingCabinetState.Available;
-                    Console.WriteLine("Døren er lukket");
-                    _display.ReadRFID();
-                }
-                else
-                {
-                    Console.WriteLine("Døren kan ikke lukkes igen");
-                }
+                _state = ChargingCabinetState.Available;
+                Console.WriteLine("Døren er lukket");
+                _display.ReadRFID();
             }
         }
     }

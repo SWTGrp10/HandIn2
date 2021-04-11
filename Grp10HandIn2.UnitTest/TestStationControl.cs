@@ -53,46 +53,6 @@ namespace Grp10HandIn2.UnitTest
             _display.Received().ConnectPhone();
         }
 
-        [Test]
-        public void StationControl_DoorOpened_ChargingCabinetStateDoorOpen()
-        {
-            //Arrange
-            var _display = Substitute.For<IDisplay>();
-            var _door = Substitute.For<IDoor>();
-            var _charger = Substitute.For<ICharger>();
-            var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger, _display);
-            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
-
-            //Act
-            _uut._state = StationControl.ChargingCabinetState.Available;
-            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = true });
-            _door.DoorChangedEvent += _uut.DoorOpened;
-
-            //Assert
-            Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.DoorOpen));
-        }
-
-        [Test]
-        public void StationControl_DoorOpened_NotAvailableCalled()
-        {
-            //Arrange
-            var _display = Substitute.For<IDisplay>();
-            var _door = Substitute.For<IDoor>();
-            var _charger = Substitute.For<ICharger>();
-            var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger, _display);
-            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
-
-            //Act
-            _uut._state = StationControl.ChargingCabinetState.Locked;
-            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = true });
-            _door.DoorChangedEvent += _uut.DoorOpened;
-
-            //Assert
-            _display.Received().NotAvailable();
-        }
-
 
         [Test]
         public void StationControl_DoorClosed_ReadRFID()
@@ -104,9 +64,9 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.DoorOpen;
             _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
             _door.DoorChangedEvent += _uut.DoorClosed;
 
@@ -114,25 +74,6 @@ namespace Grp10HandIn2.UnitTest
             _display.Received().ReadRFID();
         }
 
-        [Test]
-        public void StationControl_DoorClosed_ChargingCabinetStateAvailable()
-        {
-            //Arrange
-            var _display = Substitute.For<IDisplay>();
-            var _door = Substitute.For<IDoor>();
-            var _charger = Substitute.For<ICharger>();
-            var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger, _display);
-            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
-
-            //Act
-            _uut._state = StationControl.ChargingCabinetState.DoorOpen;
-            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
-            _door.DoorChangedEvent += _uut.DoorClosed;
-
-            //Assert
-            Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.Available));
-        }
 
         [Test]
         public void StationControl_RfidDetectedStateAvailableAndChargerConnected_LockDoor()
@@ -144,9 +85,11 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være available
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = true;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
@@ -167,9 +110,11 @@ namespace Grp10HandIn2.UnitTest
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
             _uut._logfile = _log;
-            
+            //Sætter state til at være available
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
+
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = true;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
@@ -188,9 +133,11 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             FakeChargeControl _chargeControl = new FakeChargeControl();
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være available
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Available;
             _chargeControl.connected = true;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
@@ -210,9 +157,11 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være available
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = true;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = idChanged });
             _rfid.RFIDEvent += _uut.RfidDetected;
@@ -231,9 +180,11 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være available
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = true;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
@@ -242,26 +193,6 @@ namespace Grp10HandIn2.UnitTest
             _display.Received().ChargingCabinetTaken();
         }
 
-        [Test]
-        public void StationControl_RfidDetectedStateAvailableAndChargerConnected_ChargingCabinetStateLocked()
-        {
-            //Arrange
-            var _display = Substitute.For<IDisplay>();
-            var _door = Substitute.For<IDoor>();
-            var _charger = Substitute.For<ICharger>();
-            var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger, _display);
-            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
-
-            //Act
-            _uut._state = StationControl.ChargingCabinetState.Available;
-            _charger.Connected = true;
-            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
-            _rfid.RFIDEvent += _uut.RfidDetected;
-
-            //Assert
-            Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.Locked));
-        }
 
         [Test]
         public void StationControl_RfidDetectedStateAvailableAndChargerNotConnected_ConnectionFailCalled()
@@ -273,9 +204,11 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være available
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Available;
             _charger.Connected = false;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
@@ -294,9 +227,11 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være DoorOpen
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = true });
+            _door.DoorChangedEvent += _uut.DoorOpened;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.DoorOpen;
             _charger.Connected = true;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = rfid });
             _rfid.RFIDEvent += _uut.RfidDetected;
@@ -315,9 +250,14 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være Locked
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
+            _charger.Connected = true;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
+            _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Locked;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
             _rfid.RFIDEvent += _uut.RfidDetected;
 
@@ -335,9 +275,14 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være Locked
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
+            _charger.Connected = true;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
+            _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Locked;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
             _rfid.RFIDEvent += _uut.RfidDetected;
 
@@ -355,8 +300,13 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             FakeChargeControl _chargeControl = new FakeChargeControl();
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være Locked
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
+            _charger.Connected = true;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
+            _rfid.RFIDEvent += _uut.RfidDetected;
 
-            //Act
             //Act
             _uut._state = StationControl.ChargingCabinetState.Locked;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
@@ -378,9 +328,14 @@ namespace Grp10HandIn2.UnitTest
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
             _uut._logfile = _log;
+            //Sætter state til at være Locked
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
+            _charger.Connected = true;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
+            _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Locked;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
             _rfid.RFIDEvent += _uut.RfidDetected;
 
@@ -388,25 +343,7 @@ namespace Grp10HandIn2.UnitTest
             _log.Received().WriteToLogUnlocked(_uut._oldId);
         }
 
-        [Test]
-        public void StationControl_RfidDetectedStateLockedAndOldidEqualsRFID_ChargingCabinetStateLocked()
-        {
-            //Arrange
-            var _display = Substitute.For<IDisplay>();
-            var _door = Substitute.For<IDoor>();
-            var _charger = Substitute.For<ICharger>();
-            var _rfid = Substitute.For<IRFIDReader>();
-            var _chargeControl = new ChargeControl(_charger, _display);
-            _uut = new StationControl(_rfid, _display, _door, _chargeControl);
-
-            //Act
-            _uut._state = StationControl.ChargingCabinetState.Locked;
-            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
-            _rfid.RFIDEvent += _uut.RfidDetected;
-
-            //Assert
-            Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinetState.Available));
-        }
+        
 
         [Test]
         public void StationControl_RfidDetectedStateLockedAndOldidNotEqualRFID_RFIDFail()
@@ -418,9 +355,14 @@ namespace Grp10HandIn2.UnitTest
             var _rfid = Substitute.For<IRFIDReader>();
             var _chargeControl = new ChargeControl(_charger, _display);
             _uut = new StationControl(_rfid, _display, _door, _chargeControl);
+            //Sætter state til at være Locked
+            _door.DoorChangedEvent += Raise.EventWith(new DoorEventArgs { OpenDoor = false });
+            _door.DoorChangedEvent += _uut.DoorClosed;
+            _charger.Connected = true;
+            _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = _uut._oldId });
+            _rfid.RFIDEvent += _uut.RfidDetected;
 
             //Act
-            _uut._state = StationControl.ChargingCabinetState.Locked;
             _uut._oldId = 123;
             _rfid.RFIDEvent += Raise.EventWith(new RFIDEventArgs { RFID = 456 });
             _rfid.RFIDEvent += _uut.RfidDetected;
