@@ -46,11 +46,11 @@ namespace Grp10HandIn2Libraries
             {
                 if (e.Current != 0)
                 {
-                    if (e.Current > 0 && e.Current < 5)
+                    if (e.Current > 0 && e.Current <= 5)
                     {
                         display.FullyCharged();
                     }
-                    else if (e.Current > 5 && e.Current < 500)
+                    else if (e.Current > 5 && e.Current <= 500)
                     {
                         display.OngoingCharge(e.Current);
                     }

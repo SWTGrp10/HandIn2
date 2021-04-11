@@ -88,7 +88,27 @@ namespace Grp10HandIn2.UnitTest
         }
 
         [Test]
-        public void ChargeControl_Charging_CurrentIs4_DisplayRecievesFullyCharged()
+        public void ChargeControl_Charging_CurrentIs0_DisplayRecievesNothing()
+        {
+            //Arrange
+            _charger = Substitute.For<ICharger>();
+            _display = Substitute.For<IDisplay>();
+            _uut = new ChargeControl(_charger, _display);
+            _charger.Connected = true;
+
+            //Act
+            _charger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs { Current = 0 });
+            _charger.CurrentValueEvent += _uut.Charging;
+
+            //Assert
+            _display.Received(0).FullyCharged();
+            _display.Received(0).ChargingFail();
+
+        }
+
+        [TestCase(0.1)]
+        [TestCase(5.0)]
+        public void ChargeControl_Charging_CurrentIsBetween0And5_DisplayRecievesFullyCharged(double current)
         {
             //Arrange
             _charger = Substitute.For<ICharger>();
@@ -97,7 +117,7 @@ namespace Grp10HandIn2.UnitTest
             _charger.Connected = true;
 
             //Act
-            _charger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs {Current = 4.7});
+            _charger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs {Current = current});
             _charger.CurrentValueEvent += _uut.Charging;
 
             //Assert
@@ -105,8 +125,8 @@ namespace Grp10HandIn2.UnitTest
         }
 
 
-        [TestCase(499.7)]
-        [TestCase(5.5)]
+        [TestCase(500.0)]
+        [TestCase(5.1)]
         public void ChargeControl_Charging_CurrentIs300_DisplayRecievesOnGoingCharge(double current)
         {
             //Arrange
@@ -126,7 +146,7 @@ namespace Grp10HandIn2.UnitTest
             _display.Received().OngoingCharge(current);
         }
 
-        [TestCase(500.5)]
+        [TestCase(500.1)]
         public void ChargeControl_Charging_CurrentOver500_DisplayRecievesChargingFail(double current)
         {
             //Arrange
